@@ -222,7 +222,11 @@ function setLvlTopVisible(on){
   }
 }
 function hideAllScreens() {
-  $$(".screen").forEach((s) => (s.style.display = "none"));
+  $$(".screen").forEach((s) => {
+    s.style.display = "none";
+    s.classList.remove("active");
+    s.setAttribute("aria-hidden", "true");
+  });
 }
 
 function showScreen(id) {
@@ -230,7 +234,16 @@ function showScreen(id) {
   if (!el) return;
   hideAllScreens();
   el.style.display = "block";
+  el.classList.add("active");
+  el.removeAttribute("aria-hidden");
   APP.screen = id;
+
+  // Centrale schermstatus voor CSS/patches: belangrijk voor fullscreen, keypad en map-layout.
+  try {
+    document.body.classList.toggle("wqInGame", id === "scrGame");
+    document.body.classList.toggle("wqInMap", id === "scrMap");
+    document.body.classList.toggle("wqInResult", id === "scrResult");
+  } catch (_) {}
 
   // Topbar reset: buiten het spel (scrGame/scrResult) terug naar standaard titel
   const inGameFlow = (id === "scrGame" || id === "scrResult");
