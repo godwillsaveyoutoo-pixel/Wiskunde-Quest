@@ -1,0 +1,161 @@
+
+/* Keypad bottom lock
+   Probleem: bij korte vragen schuift de keypad hoger in beeld.
+   Oplossing: het spelscherm krijgt vaste zones:
+   1fr = vraag/visual/antwoord, auto/fixed = keypad onderaan. */
+
+@media (max-width: 900px){
+
+  #scrGame.active{
+    height: calc(100dvh - 70px) !important;
+    min-height: calc(100dvh - 70px) !important;
+    max-height: calc(100dvh - 70px) !important;
+    overflow: hidden !important;
+  }
+
+  body.wqFullscreen #scrGame.active{
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  #gameGrid.game,
+  #gameGrid{
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+
+  /* De vraagzone vult altijd alle ruimte boven de keypad,
+     ook als de vraag zelf kort is. */
+  #gameGrid .panel{
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    align-self: stretch !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto auto !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid .panelBody{
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #panelBodyInner{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  #visualWrap{
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: auto !important;
+  }
+
+  /* Keypad: vaste onderzone. Niet laten bepalen door vraaghoogte. */
+  #rightPanel{
+    align-self: end !important;
+    width: 100% !important;
+    height: clamp(145px, 27dvh, 230px) !important;
+    min-height: 145px !important;
+    max-height: 230px !important;
+    display: grid !important;
+    grid-template-rows: 28px minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  #rightPanel[style*="display: none"]{
+    display: none !important;
+  }
+
+  #rightPanel .rpHead{
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    padding: 3px 8px !important;
+  }
+
+  #rightPanel .keypad{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 5px !important;
+    overflow: hidden !important;
+  }
+
+  #rightPanel .key{
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  /* Antwoordzone blijft net boven de keypad en mag niet enorm groeien */
+  #gameGrid .answer{
+    flex: 0 0 auto !important;
+    min-height: 48px !important;
+    max-height: 72px !important;
+    overflow: hidden !important;
+  }
+
+  /* MC-vragen: geen keypad, dus panel gebruikt hele schermhoogte */
+  #gameGrid.mcMode{
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  #gameGrid.mcMode #rightPanel{
+    display: none !important;
+  }
+}
+
+/* Zeer lage schermen: keypad iets kleiner, maar nog altijd onderaan */
+@media (max-width: 900px) and (max-height: 740px){
+  #scrGame.active{
+    height: calc(100dvh - 62px) !important;
+    min-height: calc(100dvh - 62px) !important;
+    max-height: calc(100dvh - 62px) !important;
+  }
+
+  body.wqFullscreen #scrGame.active{
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  #rightPanel{
+    height: clamp(126px, 24dvh, 190px) !important;
+    min-height: 126px !important;
+    max-height: 190px !important;
+  }
+
+  #rightPanel .rpHead{
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    padding: 2px 7px !important;
+  }
+
+  #rightPanel .keypad{
+    gap: 3px !important;
+    padding: 4px !important;
+  }
+}

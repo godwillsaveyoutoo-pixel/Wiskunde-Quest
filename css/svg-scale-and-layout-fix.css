@@ -1,0 +1,94 @@
+
+/* SVG scale + stable layout fix
+   Doel: visualisaties schalen mee met hun vak, i.p.v. klein vast te blijven. */
+
+/* De visual-zone verdeelt ruimte voorspelbaar */
+#visualWrap.visualWrap{
+  min-width:0 !important;
+  min-height:0 !important;
+  display:grid !important;
+  place-items:center !important;
+}
+
+/* Inline SVG's: altijd schaalbaar */
+#visualWrap > svg,
+#visualWrap .vizCard > svg,
+#visualWrap .measureCard > svg,
+#visualWrap svg:not(.geoScene){
+  width:100% !important;
+  max-width:min(100%, 760px) !important;
+  height:auto !important;
+  max-height:100% !important;
+  display:block !important;
+  margin-inline:auto !important;
+}
+
+/* Repo/object SVG's die via svgImgSafe() geladen worden.
+   Die hadden inline width:120px; dit overschrijft dat bewust. */
+#visualWrap .svgSafeWrap{
+  width:clamp(180px, 42vmin, 390px) !important;
+  max-width:94% !important;
+  min-width:0 !important;
+  display:grid !important;
+  place-items:center !important;
+}
+
+#visualWrap .svgSafeWrap img{
+  width:100% !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  display:block !important;
+}
+
+/* Grotere kaarten/diagrammen */
+#visualWrap .vizCard,
+#visualWrap .measureScene,
+#visualWrap .measureCard{
+  width:min(100%, 760px) !important;
+  max-width:100% !important;
+}
+
+/* Geo-scènes moeten het werkvlak vullen, maar niet door gewone svg-regels worden verkleind */
+#visualWrap svg.geoScene{
+  width:100% !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  display:block !important;
+}
+
+/* Multiple choice opties met SVG: schaal binnen de knop, niet buiten de knop */
+.choice svg{
+  width:min(100%, 92px) !important;
+  height:auto !important;
+  max-height:42px !important;
+}
+
+/* Smartphone: objectvisuals duidelijk groter */
+@media (max-width:900px){
+  #visualWrap .svgSafeWrap{
+    width:min(74vw, 330px) !important;
+  }
+
+  #visualWrap > svg,
+  #visualWrap .vizCard > svg,
+  #visualWrap .measureCard > svg,
+  #visualWrap svg:not(.geoScene){
+    max-width:100% !important;
+  }
+
+  #visualWrap .vizCard,
+  #visualWrap .measureScene,
+  #visualWrap .measureCard{
+    width:100% !important;
+  }
+}
+
+/* Landscape/small height: niet te veel hoogte claimen */
+@media (max-width:900px) and (max-height:760px){
+  #visualWrap .svgSafeWrap{
+    width:min(66vw, 280px) !important;
+  }
+}

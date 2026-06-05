@@ -29,6 +29,7 @@ window.sb = sb;
 /* ---------- Auth state ---------- */
 let authUser = null;
 let guestMode = false;
+let manualLogout = false;
 window.authUser = authUser;
 window.guestMode = guestMode;
 
@@ -193,6 +194,7 @@ async function signup({ username, password, name, className }) {
 }
 /* ---------- Logout ---------- */
 async function logout() {
+  manualLogout = true;
   setGuestMode(false);
   if (sb?.auth) {
     try { await sb.auth.signOut(); } catch (_) {}
@@ -234,6 +236,9 @@ async function onAuthReady() {
 }
 
 async function onAuthSignedOut() {
+  const wasManualLogout = !!manualLogout;
+  manualLogout = false;
+
   authUser = null;
   window.authUser = authUser;
 
@@ -245,7 +250,18 @@ async function onAuthSignedOut() {
   updateUserPill?.();
   renderSettings?.();
 
-  // na logout/loginwissel niet automatisch opnieuw in gastmodus vallen
+  // Belangrijk:
+  // Supabase kan na inactiviteit of netwerkproblemen een signed-out/null-session event geven.
+  // Dat mag het spel NIET zomaar onderbreken of naar het startscherm sturen.
+  const activeScreen = document.querySelector(".screen.active")?.id || "";
+  if (!wasManualLogout) {
+    if (window.guestMode) return;
+    if (activeScreen && activeScreen !== "scrStart") {
+      console.warn("Auth session lost/expired, but game screen was not interrupted.");
+      return;
+    }
+  }
+
   showScreen?.("scrStart");
 }
 
