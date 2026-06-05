@@ -9,18 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/ux-1b.css">
-<link rel="stylesheet" href="css/inhoud-maatbeker-patch.css">
-<link rel="stylesheet" href="css/general-style-patch.css">
-<link rel="stylesheet" href="css/geo-workspace-redesign.css">
-<link rel="stylesheet" href="css/geo-fit-patch.css">
-<link rel="stylesheet" href="css/geo-zoom-patch.css">
-<link rel="stylesheet" href="css/fixed-zones-layout.css">
-<link rel="stylesheet" href="css/no-native-keyboard.css">
-<link rel="stylesheet" href="css/ux-cleanup-patch.css">
-<link rel="stylesheet" href="css/svg-scale-and-layout-fix.css">
-<link rel="stylesheet" href="css/fullscreen-map-fix.css">
-<link rel="stylesheet" href="css/keypad-bottom-lock.css">
-<link rel="stylesheet" href="css/mobile-game-rework.css">
+<link rel="stylesheet" href="css/game-ui.css">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 
@@ -36,26 +25,25 @@
 <script src="js/questions.helpers.js"></script>
   <script src="js/visuals.js"></script>
 <script src="js/questions.js"></script>
-<script src="js/inhoud-maatbeker-patch.js"></script>
-<script src="js/general-style-patch.js"></script>
-<script src="js/geo-fit-patch.js"></script>
-<script src="js/geo-zoom-patch.js"></script>
-<script src="js/ux-cleanup-patch.js"></script>
 <script src="js/mrraes-shared.js"></script>
 <script src="js/game.js"></script>
-<script src="js/fixed-zones-layout.js"></script>
-<script src="js/keypad-bottom-lock.js"></script>
-
-
-<script src="js/ui.js"></script>
-<script src="js/fullscreen-map-fix.js"></script>
+  <script src="js/game-session.js"></script>
+<script src="js/answer-flow.js"></script>
+<script src="js/game-controls.js"></script>
+<script src="js/ui-shell.js"></script>
+<script src="js/overlays.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/profile.js"></script>
 <script src="js/leaderboard.js"></script>
 <script src="js/stats.js"></script>
 
-<script src="js/map.js"></script>
-<script src="js/mobile-game-rework.js"></script>
+<script src="js/map-screen.js"></script>
+<script src="js/test-setup.js"></script>
+<script src="js/game-state.js"></script>
+<script src="js/question-renderers.js"></script>
+<script src="js/action-tray.js"></script>
+<script src="js/game-ui.js"></script>
+<script src="js/app.js"></script>
 
 
 
@@ -180,8 +168,8 @@
 
       <!-- GAME -->
       <section class="screen" id="scrGame">
-        <div class="game" id="gameGrid">
-          <div class="panel">
+        <div class="game gameScreen mode-idle tray-compact" id="gameGrid">
+          <div class="panel playShell">
 
             <div class="panelBody">
               <div class="panelBodyInner" id="panelBodyInner">
@@ -192,7 +180,7 @@
               </div>
             </div>
 
-            <div class="answer">
+            <div class="answer actionTray compact" id="actionTray">
               <div class="choices" id="choices"></div>
 
               <div class="aRow" id="inputRow" style="display:none">
@@ -201,37 +189,35 @@
                 <button class="btn primary okInline" id="btnOkInline">OK</button>
               </div>
 
-              <div class="row" id="mcRow" style="justify-content:center; display:none">
+              <div class="row confirmRow" id="mcRow" style="justify-content:center; display:none">
                 <button class="btn primary" id="btnOkMc">OK</button>
               </div>
-            </div>
 
-            <div class="gcSlot" id="gcSlotBottom">
-              <div class="gameControls" id="gameControls">
-                <button id="btnHelp" class="gcBtn" title="Hulpkaart">🛈</button>
-                <button id="btnStop" class="gcBtn" title="Stop">⏹</button>
+              <div class="keypadSheet keypadWrap" id="keypadSheet" style="display:none">
+                <div class="sheetHead">
+                  <span>Keypad</span>
+                  <div class="sheetMeta">
+                    <span class="tiny" id="sheetHint"></span>
+                    <button class="sheetToggle" id="btnPadToggle" title="Keypad inklappen">▾</button>
+                  </div>
+                </div>
+                <div class="keypad" id="keypad">
+                  <button class="key">7</button><button class="key">8</button><button class="key">9</button><button class="key" data-k="back">⌫</button>
+                  <button class="key">4</button><button class="key">5</button><button class="key">6</button><button class="key" data-k="clear">C</button>
+                  <button class="key">1</button><button class="key">2</button><button class="key">3</button><button class="key" data-k="comma">,</button>
+                  <button class="key">0</button><button class="key" data-k="slash">/</button><button class="key" data-k="colon">:</button><button class="key" data-k="minus">−</button>
+                  <button class="key ok wide" data-k="ok">✅ OK</button>
+                </div>
+              </div>
+
+              <div class="gcSlot trayControls" id="trayControlsSlot">
+                <div class="gameControls" id="gameControls">
+                  <button id="btnHelp" class="gcBtn" title="Hulpkaart">🛈</button>
+                  <button id="btnStop" class="gcBtn" title="Stop">⏹</button>
+                </div>
               </div>
             </div>
           </div>
-
-          <div class="rightPanel" id="rightPanel" style="display:none">
-            <div class="rpHead">
-              <span>Keypad</span>
-              <div class="rpRight">
-                <span class="tiny" id="rpHint"></span>
-                <button class="rpToggle" id="btnPadToggle" title="Keypad inklappen">▾</button>
-              </div>
-            </div>
-            <div class="keypad" id="keypad">
-              <button class="key">7</button><button class="key">8</button><button class="key">9</button><button class="key" data-k="back">⌫</button>
-              <button class="key">4</button><button class="key">5</button><button class="key">6</button><button class="key" data-k="clear">C</button>
-              <button class="key">1</button><button class="key">2</button><button class="key">3</button><button class="key" data-k="comma">,</button>
-              <button class="key">0</button><button class="key" data-k="slash">/</button><button class="key" data-k="colon">:</button><button class="key" data-k="minus">−</button>
-              <button class="key ok wide" data-k="ok">✅ OK</button>
-            </div>
-            <div class="gcSlot hidden" id="gcSlotRight"></div>
-          </div>
-
         </div>
       </section>
 

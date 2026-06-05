@@ -1,0 +1,2970 @@
+/* Consolidated mobile/game UI layer */
+
+/* ===== Section 1 ===== */
+
+
+/* General text + visual style layer */
+#qPrompt{width:100%; text-align:center; color:#14324b;}
+#qSub{max-width:760px; margin:0 auto; text-align:center; color:#5e738b; font-weight:800; line-height:1.35;}
+#qPrompt.richPrompt{ width:100%; }
+
+.wqPrompt{
+  width:100%;
+  max-width:820px;
+  margin:0 auto;
+  display:grid;
+  gap:9px;
+  justify-items:center;
+  text-align:center;
+}
+.wqPromptKicker{
+  padding:4px 12px;
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-weight:900;
+  color:#7a5600;
+  background:linear-gradient(180deg,#fff8d8,#ffe89a);
+  border:1px solid rgba(140,99,0,.12);
+  box-shadow:0 8px 18px rgba(140,99,0,.08);
+}
+.wqPromptLine{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:6px;
+  line-height:1.2;
+}
+.wqPromptLine.main{font-size:clamp(22px,3.1vw,32px);font-weight:950;color:#12324b;}
+.wqPromptLine.sub{font-size:clamp(18px,2.2vw,24px);font-weight:850;color:#35516b;}
+.wqPromptLine.eq{font-size:clamp(24px,3.4vw,34px);font-weight:950;color:#0f2b43;}
+.wqWordChip,.wqNum,.wqUnit,.wqBlank,.wqFrac,.wqPct,.wqDeg{
+  display:inline-flex; align-items:center; justify-content:center; white-space:nowrap;
+}
+.wqNum,.wqFrac,.wqPct,.wqDeg{
+  padding:2px 8px 3px;
+  border-radius:12px;
+  background:linear-gradient(180deg,#ffffff,#edf6ff);
+  border:1px solid rgba(59,130,246,.16);
+  color:#0f4f8f;
+  box-shadow:0 7px 14px rgba(59,130,246,.08);
+}
+.wqUnit{
+  padding:3px 10px 4px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#4ea7ff,#2d77ff);
+  color:#fff; font-weight:950;
+  box-shadow:0 10px 18px rgba(45,119,255,.18);
+}
+.wqBlank{
+  min-width:74px; padding:2px 10px 4px;
+  border-radius:12px; border:2px dashed rgba(45,119,255,.35);
+  background:rgba(255,255,255,.72); color:#2d77ff; font-weight:950;
+}
+.wqEquation{
+  display:inline-flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px;
+  padding:8px 12px; border-radius:18px; background:rgba(255,255,255,.7);
+  border:1px solid rgba(59,130,246,.12); box-shadow:0 8px 18px rgba(22,51,88,.08);
+}
+
+.visualWrap{
+  background:
+    radial-gradient(380px 180px at 50% 0%, rgba(255,255,255,.92), transparent 72%),
+    linear-gradient(180deg,#fbf8f1,#f6f9ff);
+  border:2px solid rgba(223,213,197,.88);
+  border-radius:26px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 10px 24px rgba(24,49,91,.05);
+}
+.visualWrap > *{width:100%;}
+.visualWrap svg{display:block; margin-inline:auto;}
+.visualWrap .vizCard{
+  border-radius:24px; padding:12px; background:linear-gradient(180deg,#ffffff,#f4f8ff);
+  border:1px solid rgba(109,147,214,.16); box-shadow:0 12px 28px rgba(29,58,104,.08);
+}
+.visualWrap .vizCaption{margin-top:8px; text-align:center; font-size:13px; font-weight:800; color:#69819b;}
+.visualWrap svg text{font-family: inherit;}
+
+/* Nicer SVG options/buttons */
+.choice{display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden;}
+.choice svg{display:block; margin:auto;}
+.choice[data-key*='svg'], .choice:has(svg){padding:8px;}
+
+/* Geometry scenes */
+.visualWrap svg.geoScene{max-height: min(58dvh, 560px); touch-action:none;}
+@media (max-width: 700px){
+  .wqPromptLine.main{font-size:clamp(20px,5.8vw,27px)}
+  .wqPromptLine.sub{font-size:clamp(17px,4.8vw,22px)}
+  .wqPromptLine.eq{font-size:clamp(21px,6.1vw,29px)}
+  .visualWrap svg.geoScene{max-height:min(50dvh, 420px)}
+}
+
+
+/* ===== Section 2 ===== */
+
+
+/* Inhoud > maatbeker layer */
+#qPrompt.richPrompt{ width:100%; }
+.mqPrompt{
+  display:grid;
+  gap:8px;
+  width:100%;
+  max-width:780px;
+  margin:0 auto;
+  text-align:center;
+}
+.mqPromptKicker{
+  justify-self:center;
+  padding:4px 12px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#fff8d8,#ffe98e);
+  color:#7a5600;
+  border:1px solid rgba(122,86,0,.14);
+  box-shadow:0 8px 18px rgba(122,86,0,.08);
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.mqPromptMain{
+  font-size:clamp(20px, 3vw, 30px);
+  line-height:1.18;
+  font-weight:800;
+  color:#15324b;
+}
+.mqPromptSubline{
+  font-size:clamp(14px, 1.8vw, 18px);
+  line-height:1.3;
+  font-weight:700;
+  color:#4a6781;
+}
+.mqPromptMain .mqVal,
+.mqPromptSubline .mqVal{
+  display:inline-block;
+  padding:1px 8px 2px;
+  border-radius:12px;
+  background:linear-gradient(180deg,#ffffff,#eff7ff);
+  border:1px solid rgba(59,130,246,.18);
+  color:#0f3f76;
+  box-shadow:0 6px 14px rgba(59,130,246,.10);
+}
+.mqPromptMain .mqUnit,
+.mqPromptSubline .mqUnit{
+  display:inline-block;
+  padding:2px 10px 3px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#4aa2ff,#2e77ff);
+  color:white;
+  font-weight:900;
+  box-shadow:0 10px 18px rgba(46,119,255,.18);
+}
+.mqPromptMain .mqBlank,
+.mqPromptSubline .mqBlank{
+  display:inline-block;
+  min-width:72px;
+  text-align:center;
+  padding:2px 8px 4px;
+  border-radius:12px;
+  border:2px dashed rgba(46,119,255,.35);
+  background:rgba(255,255,255,.65);
+  color:#2e77ff;
+  font-weight:900;
+}
+.visualWrap .measureScene{
+  width:min(100%, 520px);
+  margin-inline:auto;
+}
+.visualWrap .measureCard{
+  border-radius:28px;
+  padding:14px;
+  background:linear-gradient(180deg,#f7fbff,#eef5ff 55%, #f8fbff);
+  box-shadow:0 16px 36px rgba(23,49,92,.12), inset 0 1px 0 rgba(255,255,255,.75);
+  border:1px solid rgba(110,153,223,.16);
+}
+.visualWrap .measureCaption{
+  margin-top:10px;
+  text-align:center;
+  font-size:13px;
+  font-weight:800;
+  color:#69819b;
+}
+@media (max-width: 700px){
+  .mqPrompt{gap:6px}
+  .mqPromptMain{font-size:clamp(18px, 5.4vw, 24px)}
+  .mqPromptSubline{font-size:14px}
+  .visualWrap .measureScene{width:min(100%, 420px)}
+}
+
+
+/* Compacte inhoudsvragen: situatie + vraag in 2 regels */
+.mqPrompt.measureQuestion{
+  gap:10px;
+}
+.mqPromptLine{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  line-height:1.22;
+}
+.mqPromptLine.context{
+  font-size:clamp(18px, 2.6vw, 25px);
+  font-weight:800;
+  color:#1a3955;
+}
+.mqPromptLine.ask{
+  font-size:clamp(21px, 3.2vw, 32px);
+  font-weight:900;
+  color:#102b43;
+}
+.mqMeasure{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+  padding:2px 5px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#ffffff,#edf7ff);
+  border:1px solid rgba(59,130,246,.18);
+  box-shadow:0 7px 16px rgba(59,130,246,.10);
+  white-space:nowrap;
+}
+.mqMeasure .mqVal{
+  padding:0 2px;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  font-weight:950;
+  color:#0c4f93;
+}
+.mqMeasure .mqUnit{
+  padding:2px 8px 3px;
+  background:linear-gradient(180deg,#4aa2ff,#2e77ff);
+  color:#fff;
+  border-radius:999px;
+  font-size:.82em;
+  font-weight:950;
+  box-shadow:0 7px 14px rgba(46,119,255,.18);
+}
+.mqQuestionUnit{
+  display:inline-flex;
+  padding:3px 11px 4px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#ffe35e,#ffbd2e);
+  color:#6a4300;
+  font-weight:950;
+  box-shadow:0 9px 16px rgba(255,189,46,.18);
+  border:1px solid rgba(130,82,0,.10);
+}
+.mqEquation{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.66);
+  border:1px solid rgba(59,130,246,.14);
+  box-shadow:0 8px 18px rgba(21,54,92,.08);
+}
+@media (max-width:700px){
+  .mqPromptLine.context{font-size:clamp(17px,5vw,22px)}
+  .mqPromptLine.ask{font-size:clamp(20px,6vw,27px)}
+  .mqEquation{padding:7px 9px; gap:6px}
+}
+
+
+/* ===== Section 3 ===== */
+
+
+/* Geodriehoek workspace redesign
+   Doel: meetopgaven veel groter en rustiger maken, zonder de geodriehoek te vervangen. */
+
+#gameGrid.geoMeasureMode{
+  width:100%;
+  max-width:none;
+}
+#gameGrid.geoMeasureMode .panel{
+  overflow:hidden;
+}
+#gameGrid.geoMeasureMode .panelBody{
+  min-height:0;
+}
+#gameGrid.geoMeasureMode .panelBodyInner{
+  height:100%;
+  min-height:0;
+  display:grid;
+  grid-template-rows:auto minmax(420px, 1fr) auto;
+  align-content:stretch;
+  gap:8px;
+  padding:8px 10px;
+}
+#gameGrid.geoMeasureMode #qPrompt{
+  max-width:980px;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPrompt,
+#gameGrid.geoMeasureMode #qPrompt .mqPrompt{
+  gap:4px;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPromptKicker,
+#gameGrid.geoMeasureMode #qPrompt .mqPromptKicker{
+  display:none;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPromptLine.main,
+#gameGrid.geoMeasureMode #qPrompt .mqPromptMain{
+  font-size:clamp(22px, 2.2vw, 34px);
+  line-height:1.12;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPromptLine.sub,
+#gameGrid.geoMeasureMode #qPrompt .mqPromptSubline{
+  font-size:clamp(17px, 1.5vw, 22px);
+}
+#gameGrid.geoMeasureMode #qSub{
+  display:none!important;
+}
+#gameGrid.geoMeasureMode #status{
+  min-height:22px;
+  font-size:clamp(14px, 1.4vw, 18px);
+}
+#gameGrid.geoMeasureMode .visualWrap{
+  height:100%;
+  min-height:420px;
+  max-height:none!important;
+  overflow:hidden;
+  padding:8px;
+  border-radius:26px;
+  background:
+    radial-gradient(520px 230px at 50% 0%, rgba(255,255,255,.96), transparent 72%),
+    linear-gradient(180deg,#fffdf8,#f4f8ff);
+}
+#gameGrid.geoMeasureMode .visualWrap > *,
+#gameGrid.geoMeasureMode .visualWrap .vizCard{
+  width:100%;
+  height:100%;
+  max-width:none!important;
+  min-height:0;
+}
+#gameGrid.geoMeasureMode .visualWrap .vizCard{
+  display:grid;
+  grid-template-rows:minmax(0, 1fr) auto;
+  padding:8px;
+}
+#gameGrid.geoMeasureMode .visualWrap svg.geoScene{
+  width:100%;
+  height:100%;
+  max-width:none!important;
+  max-height:none!important;
+  min-height:0;
+  object-fit:contain;
+  touch-action:none;
+}
+#gameGrid.geoMeasureMode .visualWrap .vizCaption{
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.15;
+}
+#gameGrid.geoMeasureMode .answer{
+  padding:8px 10px;
+  gap:6px;
+}
+#gameGrid.geoMeasureMode .aRow{
+  gap:8px;
+}
+#gameGrid.geoMeasureMode #mainInput{
+  height:48px;
+  font-size:22px;
+}
+#gameGrid.geoMeasureMode .unitChip,
+#gameGrid.geoMeasureMode .okInline{
+  height:48px;
+}
+#gameGrid.geoMeasureMode .keypad{
+  gap:7px;
+  padding:8px;
+}
+#gameGrid.geoMeasureMode .key{
+  min-height:46px;
+  border-radius:15px;
+}
+
+@media (min-width:1100px){
+  #scrGame.active{
+    overflow:hidden;
+  }
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:minmax(720px, 1fr) minmax(280px, 330px);
+    gap:10px;
+    padding:8px 10px;
+  }
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    grid-template-rows:auto minmax(500px, 1fr) auto;
+  }
+  #gameGrid.geoMeasureMode .visualWrap{
+    min-height:500px;
+  }
+}
+
+@media (min-width:1400px){
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:minmax(920px, 1fr) 340px;
+  }
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    grid-template-rows:auto minmax(580px, 1fr) auto;
+  }
+  #gameGrid.geoMeasureMode .visualWrap{
+    min-height:580px;
+  }
+}
+
+@media (max-width:980px){
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto;
+    height:auto;
+    min-height:100%;
+    overflow:visible;
+  }
+  #gameGrid.geoMeasureMode .panel{
+    min-height:auto;
+  }
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    grid-template-rows:auto minmax(0, 1fr) auto;
+    padding:6px;
+    gap:6px;
+  }
+  #gameGrid.geoMeasureMode .visualWrap{
+    height:52dvh;
+    min-height:340px;
+    padding:5px;
+  }
+  #gameGrid.geoMeasureMode #qPrompt .wqPromptLine.main,
+  #gameGrid.geoMeasureMode #qPrompt .mqPromptMain{
+    font-size:clamp(19px, 5.1vw, 27px);
+  }
+  #gameGrid.geoMeasureMode #qPrompt .wqPromptLine.sub,
+  #gameGrid.geoMeasureMode #qPrompt .mqPromptSubline{
+    font-size:clamp(15px, 4vw, 19px);
+  }
+  #gameGrid.geoMeasureMode .answer{
+    padding:6px 8px;
+  }
+  #gameGrid.geoMeasureMode #mainInput{
+    height:44px;
+    font-size:20px;
+  }
+  #gameGrid.geoMeasureMode .unitChip,
+  #gameGrid.geoMeasureMode .okInline{
+    height:44px;
+    min-width:58px;
+  }
+  #gameGrid.geoMeasureMode .keypadSheet{
+    border-radius:18px;
+  }
+  #gameGrid.geoMeasureMode .sheetHead{
+    padding:6px 10px;
+  }
+  #gameGrid.geoMeasureMode .keypad{
+    gap:5px;
+    padding:6px;
+  }
+  #gameGrid.geoMeasureMode .key{
+    min-height:38px;
+    font-size:17px;
+    border-radius:13px;
+  }
+  #gameGrid.geoMeasureMode .gcSlot{
+    padding:5px;
+  }
+  #gameGrid.geoMeasureMode .gcBtn{
+    height:36px;
+  }
+}
+
+@media (max-width:430px){
+  #gameGrid.geoMeasureMode .visualWrap{
+    height:49dvh;
+    min-height:310px;
+  }
+  #gameGrid.geoMeasureMode .visualWrap .vizCaption{
+    display:none;
+  }
+  #gameGrid.geoMeasureMode .key{
+    min-height:36px;
+    font-size:16px;
+  }
+}
+
+@media (max-height:740px){
+  #gameGrid.geoMeasureMode .visualWrap{
+    min-height:300px;
+  }
+  #gameGrid.geoMeasureMode .key{
+    min-height:36px;
+  }
+  #gameGrid.geoMeasureMode .keypad{
+    gap:5px;
+  }
+}
+
+
+/* ===== Section 4 ===== */
+
+
+/* Geo fit layer: laat de geodriehoekscène de beschikbare ruimte beter vullen.
+   Geen gigantische lege visualWrap meer op smartphone. */
+
+#gameGrid.geoMeasureMode .panelBodyInner{
+  grid-template-rows:auto auto auto !important;
+  align-content:start !important;
+  gap:8px !important;
+}
+
+#gameGrid.geoMeasureMode .visualWrap{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow:visible !important;
+  display:block !important;
+  padding:6px !important;
+  border-radius:24px !important;
+}
+
+#gameGrid.geoMeasureMode .visualWrap > *,
+#gameGrid.geoMeasureMode .visualWrap .vizCard,
+#gameGrid.geoMeasureMode .visualWrap .geoFitCard{
+  width:100% !important;
+  height:auto !important;
+  max-width:none !important;
+  min-height:0 !important;
+}
+
+#gameGrid.geoMeasureMode .visualWrap .geoFitCard{
+  display:block !important;
+  padding:0 !important;
+  border-radius:22px !important;
+  overflow:hidden !important;
+  background:#fff !important;
+}
+
+#gameGrid.geoMeasureMode .visualWrap svg.geoScene{
+  width:100% !important;
+  height:auto !important;
+  max-height:58dvh !important;
+  min-height:0 !important;
+  display:block !important;
+  touch-action:none !important;
+}
+
+#gameGrid.geoMeasureMode .visualWrap .vizCaption{
+  display:none !important;
+}
+
+/* Pc: groter en breder werkblad */
+@media (min-width: 981px){
+  #scrGame.active{
+    overflow:hidden;
+  }
+
+  #gameGrid.geoMeasureMode{
+    width:100vw !important;
+    max-width:none !important;
+    grid-template-columns:minmax(760px, 1fr) minmax(300px, 340px) !important;
+    gap:12px !important;
+    padding:10px 14px !important;
+  }
+
+  #gameGrid.geoMeasureMode .panel{
+    max-width:none !important;
+  }
+
+  #gameGrid.geoMeasureMode .visualWrap svg.geoScene{
+    max-height:68dvh !important;
+  }
+}
+
+/* Smartphone: ruim genoeg, maar geen groot leeg vlak */
+@media (max-width: 980px){
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    padding:6px !important;
+  }
+
+  #gameGrid.geoMeasureMode .visualWrap{
+    padding:5px !important;
+  }
+
+  #gameGrid.geoMeasureMode .visualWrap svg.geoScene{
+    max-height:44dvh !important;
+  }
+
+  #gameGrid.geoMeasureMode #qPrompt .wqPromptLine.main,
+  #gameGrid.geoMeasureMode #qPrompt .mqPromptMain{
+    font-size:clamp(19px, 5.2vw, 26px) !important;
+    line-height:1.1 !important;
+  }
+
+  #gameGrid.geoMeasureMode .answer{
+    padding:6px 8px !important;
+  }
+}
+
+/* Heel lage schermen: visual iets compacter zodat keypad bereikbaar blijft */
+@media (max-height: 760px){
+  #gameGrid.geoMeasureMode .visualWrap svg.geoScene{
+    max-height:39dvh !important;
+  }
+}
+
+
+/* ===== Section 5 ===== */
+
+
+/* Geo zoom layer: zoom de volledige geoScene, dus lijn/hoek + geodriehoek samen. */
+
+.visualWrap svg.geoScene{
+  cursor: zoom-in;
+  touch-action: none;
+}
+
+.visualWrap svg.geoScene.isPanning,
+.visualWrap svg.geoScene.isPinching{
+  cursor: grabbing;
+}
+
+.geoZoomHint{
+  position:absolute;
+  right:10px;
+  bottom:10px;
+  z-index:4;
+  pointer-events:none;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(120,150,190,.22);
+  color:#5f748c;
+  font-weight:900;
+  font-size:11px;
+  box-shadow:0 8px 18px rgba(20,40,80,.08);
+}
+
+#gameGrid.geoMeasureMode .visualWrap{
+  position:relative;
+}
+
+@media (max-width:700px){
+  .geoZoomHint{
+    font-size:10px;
+    right:8px;
+    bottom:8px;
+    padding:4px 8px;
+  }
+}
+
+
+/* ===== Section 6 ===== */
+
+
+/* Fixed Zones Layout
+   Eén rustige schermverdeling:
+   - boven/links: vraag + visualisatie
+   - midden/onder: antwoord
+   - rechts/onder: keypad
+   Geen MutationObserver, geen geforceerde inline JS. */
+
+:root{
+  --game-gap: 10px;
+  --answer-zone-h: 82px;
+  --keypad-zone-w: 320px;
+}
+
+/* Desktop/laptop */
+@media (min-width: 901px){
+  #scrGame.active{
+    height: calc(100dvh - 76px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid.game,
+  #gameGrid{
+    height: 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) var(--keypad-zone-w) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: var(--game-gap) !important;
+    padding: 10px 12px !important;
+    align-items: stretch !important;
+  }
+
+  #gameGrid .panel{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto auto !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid .panelBody{
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #panelBodyInner{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    align-content: stretch !important;
+  }
+
+  #qPrompt{
+    align-self: center !important;
+  }
+
+  #visualWrap{
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow: auto !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 10px !important;
+  }
+
+  #visualWrap img{
+    max-height: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  #visualWrap svg{
+    max-height: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #visualWrap svg.geoScene{
+    height: 100% !important;
+    width: 100% !important;
+    max-height: none !important;
+  }
+
+  #gameGrid .answer{
+    min-height: var(--answer-zone-h) !important;
+    padding: 10px 12px !important;
+    display: grid !important;
+    align-content: center !important;
+  }
+
+  #keypadSheet{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  #keypadSheet .keypad{
+    min-height: 0 !important;
+    align-content: center !important;
+  }
+}
+
+/* Smartphone/tablet: vaste zones onder elkaar */
+@media (max-width: 900px){
+  #scrGame.active{
+    height: calc(100dvh - 74px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid.game,
+  #gameGrid{
+    height: 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    gap: 6px !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid .panel{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+  }
+
+  #gameGrid .panelBody{
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #panelBodyInner{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    gap: 6px !important;
+    padding: 8px !important;
+    align-content: stretch !important;
+  }
+
+  #qPrompt,
+  .promptBig{
+    font-size: clamp(22px, 6.5vw, 30px) !important;
+    line-height: 1.1 !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+
+  #qPrompt.richPrompt .wqPrompt,
+  #qPrompt.richPrompt .mqPrompt{
+    gap: 5px !important;
+  }
+
+  #qPrompt.richPrompt .wqPromptKicker,
+  #qPrompt.richPrompt .mqPromptKicker{
+    font-size: 10px !important;
+    padding: 2px 8px !important;
+  }
+
+  #qPrompt.richPrompt .wqPromptLine.main,
+  #qPrompt.richPrompt .mqPromptMain,
+  #qPrompt.richPrompt .mqPromptLine.ask{
+    font-size: clamp(20px, 5.8vw, 27px) !important;
+    line-height: 1.1 !important;
+  }
+
+  #qPrompt.richPrompt .wqPromptLine.sub,
+  #qPrompt.richPrompt .mqPromptSubline,
+  #qPrompt.richPrompt .mqPromptLine.context{
+    font-size: clamp(16px, 4.5vw, 21px) !important;
+    line-height: 1.14 !important;
+  }
+
+  #qSub{
+    font-size: 13px !important;
+    min-height: 0 !important;
+  }
+
+  /* Deze zone krijgt alle resterende ruimte */
+  #visualWrap{
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: auto !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 6px !important;
+    border-radius: 17px !important;
+  }
+
+  /* Forceer oude inline icon-wrapper groter, maar binnen de visuele zone */
+  #visualWrap .svgSafeWrap{
+    width: min(70vw, 300px) !important;
+    max-width: 100% !important;
+  }
+
+  #visualWrap .svgSafeWrap img,
+  #visualWrap img{
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  #visualWrap svg:not(.geoScene){
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    height: auto !important;
+  }
+
+  #visualWrap .measureScene,
+  #visualWrap .vizCard{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #visualWrap .measureCard,
+  #visualWrap .vizCard{
+    padding: 6px !important;
+    border-radius: 16px !important;
+  }
+
+  #visualWrap .measureCaption,
+  #visualWrap .vizCaption{
+    display: none !important;
+  }
+
+  #visualWrap svg.geoScene{
+    width: 100% !important;
+    height: auto !important;
+    max-height: 100% !important;
+  }
+
+  /* Antwoordzone: vast en compact */
+  #gameGrid .answer{
+    flex: 0 0 auto !important;
+    min-height: 54px !important;
+    max-height: 78px !important;
+    padding: 6px 7px !important;
+    display: grid !important;
+    align-content: center !important;
+    gap: 5px !important;
+  }
+
+  #gameGrid .aRow{
+    gap: 5px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #mainInput{
+    height: 42px !important;
+    min-height: 42px !important;
+    font-size: 22px !important;
+    flex: 1 1 auto !important;
+    max-width: none !important;
+  }
+
+  .unitChip,
+  .okInline,
+  #btnOkInline,
+  #btnOkMc{
+    height: 42px !important;
+    min-height: 42px !important;
+    border-radius: 14px !important;
+  }
+
+  .unitChip{
+    min-width: 46px !important;
+    padding: 0 8px !important;
+    font-size: 17px !important;
+  }
+
+  .okInline,
+  #btnOkInline,
+  #btnOkMc{
+    min-width: 74px !important;
+    padding: 0 10px !important;
+    font-size: 17px !important;
+  }
+
+  #status{
+    min-height: 14px !important;
+    font-size: 13px !important;
+    line-height: 1.05 !important;
+  }
+
+  /* Keypadzone: vast onderaan, niet meer dominant */
+  #keypadSheet{
+    height: 30dvh !important;
+    max-height: 250px !important;
+    min-height: 170px !important;
+    display: grid !important;
+    grid-template-rows: 28px minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+  }
+
+  #keypadSheet .sheetHead{
+    min-height: 28px !important;
+    height: 28px !important;
+    padding: 3px 8px !important;
+    font-size: 14px !important;
+  }
+
+  #keypadSheet .sheetHead strong,
+  #keypadSheet .sheetHead span{
+    font-size: 14px !important;
+  }
+
+  #keypadSheet .sheetToggle{
+    width: 34px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+  }
+
+  #keypadSheet .keypad{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 5px !important;
+  }
+
+  #keypadSheet .key{
+    min-height: 0 !important;
+    height: auto !important;
+    border-radius: 11px !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+  }
+
+  #keypadSheet .key.ok{
+    grid-column: 1 / -1 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    font-size: 16px !important;
+  }
+
+  #keypadSheet .gcSlot{
+    display: none !important;
+  }
+
+  .choices{
+    gap: 6px !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .choice{
+    min-height: 44px !important;
+    font-size: clamp(15px, 4.4vw, 19px) !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* Lage smartphone: nog iets meer naar opgave, minder naar keypad */
+@media (max-width: 900px) and (max-height: 760px){
+  #scrGame.active{
+    height: calc(100dvh - 66px) !important;
+  }
+
+  #keypadSheet{
+    height: 26dvh !important;
+    min-height: 140px !important;
+    max-height: 210px !important;
+  }
+
+  #keypadSheet .keypad{
+    gap: 3px !important;
+    padding: 4px !important;
+  }
+
+  #keypadSheet .key{
+    font-size: 14px !important;
+  }
+
+  #gameGrid .answer{
+    min-height: 48px !important;
+    max-height: 68px !important;
+  }
+
+  #mainInput,
+  .unitChip,
+  .okInline,
+  #btnOkInline,
+  #btnOkMc{
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+}
+
+/* MC-vragen hebben geen keypad nodig */
+@media (max-width: 900px){
+  #gameGrid.mcMode #keypadSheet{
+    display: none !important;
+  }
+}
+
+
+/* ===== Section 7 ===== */
+
+
+/* No native keyboard layer */
+.gameNoNativeKeyboard{
+  caret-color: transparent !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: manipulation !important;
+}
+
+/* Maak duidelijk dat het veld via de game-keypad wordt ingevuld */
+.gameNoNativeKeyboard:focus{
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(255, 190, 70, .24), inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+
+@media (max-width:900px){
+  #mainInput.gameNoNativeKeyboard::placeholder{
+    opacity:.52;
+  }
+}
+
+
+/* ===== Section 8 ===== */
+
+
+/* UX cleanup: meerkeuze zonder keypad, rustigere vragen, fullscreen */
+
+#gameGrid.mcMode #keypadSheet{
+  display:none !important;
+}
+
+#gameGrid.mcMode{
+  grid-template-columns:1fr !important;
+}
+
+#gameGrid.mcMode .panel{
+  max-width:none !important;
+}
+
+#gameGrid.mcMode .answer{
+  display:grid !important;
+  gap:8px !important;
+}
+
+#gameGrid.mcMode .choices{
+  width:100% !important;
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)) !important;
+  gap:8px !important;
+}
+
+#gameGrid.mcMode .choice{
+  min-height:52px !important;
+  height:auto !important;
+  white-space:normal !important;
+}
+
+#gameGrid.mcMode #mcRow{
+  display:flex !important;
+  justify-content:center !important;
+}
+
+#gameGrid.mcMode #btnOkMc{
+  min-width:140px !important;
+}
+
+/* Vraagtekst: minder chaos, betere chips */
+.wqHint{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:2px 8px;
+  border-radius:999px;
+  background:rgba(255,244,205,.8);
+  color:#775900;
+  font-size:.72em;
+  font-weight:850;
+  border:1px solid rgba(160,120,0,.12);
+}
+
+.wqPromptLine{
+  word-break:normal;
+  overflow-wrap:normal;
+}
+
+.wqPromptLine.main,
+.wqPromptLine.eq{
+  text-wrap:balance;
+}
+
+/* Fullscreen: topbar compacter, spel gebruikt meer hoogte */
+body.wqFullscreen #scrGame.active{
+  height:100dvh !important;
+}
+
+body.wqFullscreen .top{
+  min-height:42px !important;
+  height:42px !important;
+  padding-top:3px !important;
+  padding-bottom:3px !important;
+}
+
+body.wqFullscreen .brandTitle,
+body.wqFullscreen #pillUser,
+body.wqFullscreen #pillMode,
+body.wqFullscreen #pillHud,
+body.wqFullscreen #pillBadges{
+  font-size:12px !important;
+}
+
+body.wqFullscreen .iconBtn{
+  width:36px !important;
+  height:36px !important;
+}
+
+body.wqFullscreen .hudLine{
+  display:none !important;
+}
+
+/* Mobiel: MC-keuzes krijgen plaats, keypad helemaal weg */
+@media (max-width:900px){
+  #gameGrid.mcMode{
+    grid-template-rows:minmax(0, 1fr) !important;
+  }
+
+  #gameGrid.mcMode .panel{
+    height:100% !important;
+  }
+
+  #gameGrid.mcMode .choices{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  #gameGrid.mcMode .choice{
+    min-height:46px !important;
+    font-size:clamp(15px, 4.4vw, 19px) !important;
+  }
+
+  #gameGrid.mcMode .gcSlot{
+    display:flex !important;
+  }
+
+  body.wqFullscreen .top{
+    display:none !important;
+  }
+
+  body.wqFullscreen #scrGame.active{
+    height:100dvh !important;
+  }
+}
+
+
+/* ===== Section 9 ===== */
+
+
+/* SVG scale + stable layout fix
+   Doel: visualisaties schalen mee met hun vak, i.p.v. klein vast te blijven. */
+
+/* De visual-zone verdeelt ruimte voorspelbaar */
+#visualWrap.visualWrap{
+  min-width:0 !important;
+  min-height:0 !important;
+  display:grid !important;
+  place-items:center !important;
+}
+
+/* Inline SVG's: altijd schaalbaar */
+#visualWrap > svg,
+#visualWrap .vizCard > svg,
+#visualWrap .measureCard > svg,
+#visualWrap svg:not(.geoScene){
+  width:100% !important;
+  max-width:min(100%, 760px) !important;
+  height:auto !important;
+  max-height:100% !important;
+  display:block !important;
+  margin-inline:auto !important;
+}
+
+/* Repo/object SVG's die via svgImgSafe() geladen worden.
+   Die hadden inline width:120px; dit overschrijft dat bewust. */
+#visualWrap .svgSafeWrap{
+  width:clamp(180px, 42vmin, 390px) !important;
+  max-width:94% !important;
+  min-width:0 !important;
+  display:grid !important;
+  place-items:center !important;
+}
+
+#visualWrap .svgSafeWrap img{
+  width:100% !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  display:block !important;
+}
+
+/* Grotere kaarten/diagrammen */
+#visualWrap .vizCard,
+#visualWrap .measureScene,
+#visualWrap .measureCard{
+  width:min(100%, 760px) !important;
+  max-width:100% !important;
+}
+
+/* Geo-scènes moeten het werkvlak vullen, maar niet door gewone svg-regels worden verkleind */
+#visualWrap svg.geoScene{
+  width:100% !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  display:block !important;
+}
+
+/* Multiple choice opties met SVG: schaal binnen de knop, niet buiten de knop */
+.choice svg{
+  width:min(100%, 92px) !important;
+  height:auto !important;
+  max-height:42px !important;
+}
+
+/* Smartphone: objectvisuals duidelijk groter */
+@media (max-width:900px){
+  #visualWrap .svgSafeWrap{
+    width:min(74vw, 330px) !important;
+  }
+
+  #visualWrap > svg,
+  #visualWrap .vizCard > svg,
+  #visualWrap .measureCard > svg,
+  #visualWrap svg:not(.geoScene){
+    max-width:100% !important;
+  }
+
+  #visualWrap .vizCard,
+  #visualWrap .measureScene,
+  #visualWrap .measureCard{
+    width:100% !important;
+  }
+}
+
+/* Landscape/small height: niet te veel hoogte claimen */
+@media (max-width:900px) and (max-height:760px){
+  #visualWrap .svgSafeWrap{
+    width:min(66vw, 280px) !important;
+  }
+}
+
+
+/* ===== Section 10 ===== */
+
+
+/* Fullscreen + Map fix
+   Zorgt dat je altijd uit fullscreen/spel kan, en dat de wereldkaarten beter de hoogte vullen. */
+
+/* Altijd zichtbare zwevende knoppen in fullscreen */
+.fsFloatingControls{
+  position:fixed;
+  top:max(8px, env(safe-area-inset-top));
+  right:max(8px, env(safe-area-inset-right));
+  z-index:99999;
+  display:none;
+  gap:8px;
+  align-items:center;
+  pointer-events:auto;
+}
+
+body.wqFullscreen .fsFloatingControls{
+  display:flex;
+}
+
+.fsFloatingControls button{
+  min-width:42px;
+  height:42px;
+  border-radius:16px;
+  border:2px solid rgba(255,255,255,.68);
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(242,247,255,.94));
+  color:#14324b;
+  box-shadow:0 10px 24px rgba(20,40,80,.18);
+  font-weight:950;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.fsFloatingControls .fsStopBtn{
+  min-width:78px;
+  padding:0 12px;
+  color:#7a1f1f;
+  background:linear-gradient(180deg,#fff7f3,#ffe6dd);
+}
+
+body:not(.wqInGame) .fsFloatingControls .fsStopBtn{
+  display:none;
+}
+
+/* In fullscreen mag de gewone topbar verborgen zijn, maar niet de zwevende knoppen */
+body.wqFullscreen .top{
+  display:none !important;
+}
+
+/* Zorg dat het spel in fullscreen de volledige hoogte gebruikt */
+body.wqFullscreen #scrGame.active,
+body.wqFullscreen #scrMap.active{
+  height:100dvh !important;
+  min-height:100dvh !important;
+}
+
+/* Wereldscherm: kaarten moeten tot lager in beeld komen */
+#scrMap.active{
+  height:calc(100dvh - 72px);
+  min-height:0;
+  overflow:hidden;
+}
+
+#scrMap .map{
+  height:100%;
+  min-height:0;
+  display:grid;
+  grid-template-rows:auto auto minmax(0, 1fr);
+  gap:10px;
+  padding-bottom:10px;
+}
+
+#scrMap .mapGrid{
+  min-height:0;
+  height:100%;
+  overflow-y:auto;
+  align-content:stretch;
+  padding-bottom:16px;
+}
+
+/* Kaarten vullen mooier in hoogte wanneer er weinig rijen zijn */
+#scrMap .topicCard,
+#scrMap .mapCard,
+#scrMap .worldCard{
+  min-height:clamp(190px, 28vh, 290px);
+}
+
+@media (min-width:900px){
+  #scrMap .mapGrid{
+    grid-auto-rows:minmax(220px, 1fr);
+  }
+}
+
+/* Mobiel: wereldkaarten krijgen meer verticale ruimte */
+@media (max-width:900px){
+  #scrMap.active{
+    height:calc(100dvh - 62px);
+  }
+
+  body.wqFullscreen #scrMap.active{
+    height:100dvh !important;
+  }
+
+  #scrMap .map{
+    gap:7px;
+    padding:7px;
+    grid-template-rows:auto auto minmax(0, 1fr);
+  }
+
+  #scrMap .mapHeader{
+    padding:6px 8px;
+  }
+
+  #scrMap .mapDeckBar{
+    min-height:34px;
+  }
+
+  #scrMap .mapGrid{
+    height:100%;
+    padding-bottom:10px;
+  }
+
+  #scrMap .topicCard,
+  #scrMap .mapCard,
+  #scrMap .worldCard{
+    min-height:clamp(210px, 46vh, 420px);
+  }
+
+  .fsFloatingControls button{
+    min-width:40px;
+    height:40px;
+    border-radius:15px;
+    font-size:17px;
+  }
+
+  .fsFloatingControls .fsStopBtn{
+    min-width:72px;
+  }
+}
+
+/* Als oude CSS fullscreen topbar verbergt: stage toch juist positioneren */
+body.wqFullscreen .stage{
+  height:100dvh !important;
+}
+
+
+/* ===== Section 11 ===== */
+
+
+/* Keypad bottom lock
+   Probleem: bij korte vragen schuift de keypad hoger in beeld.
+   Oplossing: het spelscherm krijgt vaste zones:
+   1fr = vraag/visual/antwoord, auto/fixed = keypad onderaan. */
+
+@media (max-width: 900px){
+
+  #scrGame.active{
+    height: calc(100dvh - 70px) !important;
+    min-height: calc(100dvh - 70px) !important;
+    max-height: calc(100dvh - 70px) !important;
+    overflow: hidden !important;
+  }
+
+  body.wqFullscreen #scrGame.active{
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  #gameGrid.game,
+  #gameGrid{
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+
+  /* De vraagzone vult altijd alle ruimte boven de keypad,
+     ook als de vraag zelf kort is. */
+  #gameGrid .panel{
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    align-self: stretch !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto auto !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid .panelBody{
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #panelBodyInner{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  #visualWrap{
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: auto !important;
+  }
+
+  /* Keypad: vaste onderzone. Niet laten bepalen door vraaghoogte. */
+  #keypadSheet{
+    align-self: end !important;
+    width: 100% !important;
+    height: clamp(145px, 27dvh, 230px) !important;
+    min-height: 145px !important;
+    max-height: 230px !important;
+    display: grid !important;
+    grid-template-rows: 28px minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  #keypadSheet[style*="display: none"]{
+    display: none !important;
+  }
+
+  #keypadSheet .sheetHead{
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    padding: 3px 8px !important;
+  }
+
+  #keypadSheet .keypad{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 5px !important;
+    overflow: hidden !important;
+  }
+
+  #keypadSheet .key{
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  /* Antwoordzone blijft net boven de keypad en mag niet enorm groeien */
+  #gameGrid .answer{
+    flex: 0 0 auto !important;
+    min-height: 48px !important;
+    max-height: 72px !important;
+    overflow: hidden !important;
+  }
+
+  /* MC-vragen: geen keypad, dus panel gebruikt hele schermhoogte */
+  #gameGrid.mcMode{
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  #gameGrid.mcMode #keypadSheet{
+    display: none !important;
+  }
+}
+
+/* Zeer lage schermen: keypad iets kleiner, maar nog altijd onderaan */
+@media (max-width: 900px) and (max-height: 740px){
+  #scrGame.active{
+    height: calc(100dvh - 62px) !important;
+    min-height: calc(100dvh - 62px) !important;
+    max-height: calc(100dvh - 62px) !important;
+  }
+
+  body.wqFullscreen #scrGame.active{
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  #keypadSheet{
+    height: clamp(126px, 24dvh, 190px) !important;
+    min-height: 126px !important;
+    max-height: 190px !important;
+  }
+
+  #keypadSheet .sheetHead{
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    padding: 2px 7px !important;
+  }
+
+  #keypadSheet .keypad{
+    gap: 3px !important;
+    padding: 4px !important;
+  }
+}
+
+
+/* ===== Section 12 ===== */
+
+:root{
+  --mobile-shell-max: 560px;
+  --mobile-pad: 12px;
+  --mobile-card-r: 24px;
+  --mobile-soft: #eef4ff;
+  --mobile-soft-2: #f7f9ff;
+  --mobile-deep: #132238;
+  --mobile-accent-2: #60a5fa;
+}
+
+html,body{
+  min-height:100%;
+  overscroll-behavior-y:none;
+}
+
+body.mobile-game-mobile-ui{
+  background:
+    radial-gradient(80% 45% at 50% -8%, rgba(96,165,250,.28) 0%, rgba(96,165,250,0) 60%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+body.mobile-game-mobile-ui .app{
+  min-height:100dvh;
+  height:auto;
+  align-items:flex-start;
+  padding:
+    max(10px, env(safe-area-inset-top))
+    10px
+    max(10px, env(safe-area-inset-bottom));
+}
+
+body.mobile-game-mobile-ui .shell{
+  width:min(100%, var(--mobile-shell-max));
+  margin:0 auto;
+  min-height:calc(100dvh - max(20px, env(safe-area-inset-top)) - max(20px, env(safe-area-inset-bottom)));
+  gap:10px;
+}
+
+body.mobile-game-mobile-ui .top{
+  position:sticky;
+  top:max(8px, env(safe-area-inset-top));
+  z-index:40;
+  border-radius:24px;
+  padding:10px 12px;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 10px 28px rgba(15,23,42,.10);
+  backdrop-filter: blur(12px);
+}
+
+body.mobile-game-mobile-ui .brandTitle{
+  font-size:18px;
+}
+
+body.mobile-game-mobile-ui .pill,
+body.mobile-game-mobile-ui .iconBtn{
+  box-shadow:0 6px 14px rgba(15,23,42,.05);
+}
+
+body.mobile-game-mobile-ui .stage{
+  border-radius:30px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 22px 50px rgba(15,23,42,.12);
+  border:1px solid rgba(226,232,240,.9);
+}
+
+body.mobile-game-mobile-ui .screen{
+  padding:0;
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.mobile-game-mobile-ui .screen.active{
+  display:block;
+}
+
+body.mobile-game-mobile-ui .center,
+body.mobile-game-mobile-ui .map,
+body.mobile-game-mobile-ui .board{
+  padding:14px;
+}
+
+body.mobile-game-mobile-ui .card,
+body.mobile-game-mobile-ui .panel,
+body.mobile-game-mobile-ui .keypadSheet,
+body.mobile-game-mobile-ui .tile,
+body.mobile-game-mobile-ui .modal,
+body.mobile-game-mobile-ui .helpCard,
+body.mobile-game-mobile-ui .drawer{
+  border-radius:var(--mobile-card-r);
+}
+
+body.mobile-game-mobile-ui .card{
+  width:100%;
+  border-color:rgba(226,232,240,.95);
+  box-shadow:0 14px 28px rgba(15,23,42,.07);
+}
+
+body.mobile-game-mobile-ui .h1,
+body.mobile-game-mobile-ui h2{
+  letter-spacing:.2px;
+}
+
+/* Start screen */
+body.mobile-game-mobile-ui .startCard{
+  background:linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+body.mobile-game-mobile-ui .startHero{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+body.mobile-game-mobile-ui .questMark{
+  width:64px;
+  height:64px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  background:linear-gradient(180deg, rgba(37,99,235,.12), rgba(96,165,250,.22));
+}
+
+body.mobile-game-mobile-ui .bigPlay,
+body.mobile-game-mobile-ui .startActions .btn,
+body.mobile-game-mobile-ui .row .btn.primary.grow{
+  width:100%;
+}
+
+body.mobile-game-mobile-ui .startActions{
+  display:grid;
+  grid-template-columns:1fr;
+}
+
+/* Map */
+body.mobile-game-mobile-ui .map{
+  grid-template-rows:auto auto 1fr;
+  gap:12px;
+}
+
+body.mobile-game-mobile-ui .mapHeader,
+body.mobile-game-mobile-ui .boardTop{
+  flex-direction:column;
+  align-items:stretch;
+}
+
+body.mobile-game-mobile-ui .mapHeaderBtns,
+body.mobile-game-mobile-ui .boardTop .row{
+  width:100%;
+}
+
+body.mobile-game-mobile-ui .mapHeaderBtns .btn,
+body.mobile-game-mobile-ui .boardTop .row .btn{
+  flex:1 1 auto;
+}
+
+body.mobile-game-mobile-ui .mapDeckBar{
+  position:sticky;
+  top:0;
+  z-index:2;
+  padding:8px 10px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(243,247,255,.96), rgba(255,255,255,.96));
+  border:1px solid rgba(226,232,240,.9);
+}
+
+body.mobile-game-mobile-ui .mapGrid{
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+  align-content:start;
+}
+
+body.mobile-game-mobile-ui .tile{
+  min-height:0;
+  aspect-ratio:0.90;
+  background:linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+}
+
+body.mobile-game-mobile-ui .tileTop{
+  padding:14px 10px 0;
+}
+
+body.mobile-game-mobile-ui .tileTop svg,
+body.mobile-game-mobile-ui .tileTop img{
+  width:100%;
+  height:clamp(90px, 15vh, 132px);
+  max-height:none;
+}
+
+body.mobile-game-mobile-ui .tileTitle{
+  padding:10px 10px 14px;
+  font-size:15px;
+  line-height:1.12;
+}
+
+/* Game */
+body.mobile-game-mobile-ui #scrGame{
+  overflow:hidden;
+}
+
+body.mobile-game-mobile-ui .game{
+  height:100%;
+  min-height:0;
+  padding:12px;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-rows:minmax(0, 1fr) auto;
+  gap:10px;
+}
+
+body.mobile-game-mobile-ui .panel{
+  min-height:0;
+  display:grid;
+  grid-template-rows:minmax(0, 1fr) auto auto;
+  background:linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+}
+
+body.mobile-game-mobile-ui .panelBody{
+  min-height:0;
+}
+
+body.mobile-game-mobile-ui .panelBodyInner{
+  height:100%;
+  min-height:0;
+  padding:12px;
+  gap:10px;
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+}
+
+body.mobile-game-mobile-ui .panelBodyInner.noVisual{
+  grid-template-rows:auto auto auto;
+  justify-items:stretch;
+  align-content:center;
+}
+
+body.mobile-game-mobile-ui .promptBig{
+  font-size:clamp(18px, 4.7vw, 24px);
+  line-height:1.18;
+}
+
+body.mobile-game-mobile-ui .promptSub{
+  font-size:14px;
+}
+
+body.mobile-game-mobile-ui .visualWrap{
+  width:100%;
+  height:100%;
+  min-height:220px;
+  max-height:none;
+  padding:8px;
+  overflow:auto;
+  border-radius:20px;
+  background:linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  border:1px solid rgba(191,219,254,.9);
+}
+
+body.mobile-game-mobile-ui .visualWrap svg,
+body.mobile-game-mobile-ui .visualWrap img{
+  width:100%;
+  height:auto;
+  max-height:100%;
+}
+
+body.mobile-game-mobile-ui .answer{
+  padding:10px 12px 14px;
+  gap:10px;
+}
+
+body.mobile-game-mobile-ui .choices{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+
+body.mobile-game-mobile-ui .choice{
+  width:100%;
+  min-width:0;
+  min-height:54px;
+  height:auto;
+  padding:10px 12px;
+  justify-content:flex-start;
+  text-align:left;
+}
+
+body.mobile-game-mobile-ui .aRow{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:stretch;
+  flex-wrap:nowrap;
+}
+
+body.mobile-game-mobile-ui .aRow.clickOnly{
+  justify-content:center;
+}
+
+body.mobile-game-mobile-ui .aRow .input{
+  flex:1 1 auto;
+  min-width:0;
+  max-width:none !important;
+}
+
+body.mobile-game-mobile-ui .okInline{
+  min-width:86px;
+  flex:0 0 auto;
+}
+
+body.mobile-game-mobile-ui .unitChip{
+  flex:0 0 auto;
+}
+
+body.mobile-game-mobile-ui .gcSlot{
+  padding:10px 12px 14px;
+  background:transparent;
+}
+
+body.mobile-game-mobile-ui .gameControls{
+  width:100%;
+}
+
+body.mobile-game-mobile-ui .gcBtn{
+  flex:1 1 0;
+  width:auto;
+  min-width:0;
+  height:46px;
+}
+
+body.mobile-game-mobile-ui .keypadSheet{
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 10px 26px rgba(15,23,42,.11);
+}
+
+body.mobile-game-mobile-ui .sheetHead{
+  padding:8px 12px;
+  background:linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+}
+
+body.mobile-game-mobile-ui .keypad{
+  padding:10px 10px calc(10px + env(safe-area-inset-bottom));
+  display:grid;
+  grid-template-columns:repeat(5, minmax(0, 1fr));
+  gap:8px;
+}
+
+body.mobile-game-mobile-ui .key{
+  height:48px;
+  min-width:0;
+  border-radius:16px;
+  font-size:20px;
+}
+
+body.mobile-game-mobile-ui .key.wide{
+  grid-column:1 / -1;
+  height:50px;
+}
+
+body.mobile-game-mobile-ui .keypadSheet.collapsed .keypad{
+  display:grid;
+}
+
+/* Geo meet mode */
+body.mobile-game-mobile-ui .game.geoMeasureMode .panelBodyInner,
+body.mobile-game-mobile-ui .panel.geoMeasureMode .panelBodyInner{
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+}
+
+body.mobile-game-mobile-ui .visualWrap.geoMeasureMode,
+body.mobile-game-mobile-ui .game.geoMeasureMode .visualWrap{
+  min-height:260px;
+  max-height:none;
+  height:100%;
+  padding:6px;
+}
+
+body.mobile-game-mobile-ui .game.geoMeasureMode .visualWrap svg.geoScene,
+body.mobile-game-mobile-ui .visualWrap.geoMeasureMode svg.geoScene{
+  width:100%;
+  max-height:none;
+}
+
+body.mobile-game-mobile-ui .keypadSheet.geoMeasureMode .keypad,
+body.mobile-game-mobile-ui .game.geoMeasureMode .keypadSheet .keypad{
+  grid-template-columns:repeat(6, minmax(0,1fr));
+}
+
+body.mobile-game-mobile-ui .keypadSheet.geoMeasureMode .key,
+body.mobile-game-mobile-ui .game.geoMeasureMode .keypadSheet .key{
+  height:42px;
+  font-size:17px;
+}
+
+body.mobile-game-mobile-ui .keypadSheet.geoMeasureMode .key.wide,
+body.mobile-game-mobile-ui .game.geoMeasureMode .keypadSheet .key.wide{
+  grid-column:1 / -1;
+}
+
+/* Other screens */
+body.mobile-game-mobile-ui .tableWrap{
+  max-height:none;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+body.mobile-game-mobile-ui .badgeGrid{
+  grid-template-columns:1fr;
+}
+
+body.mobile-game-mobile-ui .wideScreen .card,
+body.mobile-game-mobile-ui .badgeScreen .card{
+  height:auto;
+  min-height:100%;
+}
+
+body.mobile-game-mobile-ui .modalBack,
+body.mobile-game-mobile-ui .drawerBackdrop{
+  align-items:flex-end;
+}
+
+body.mobile-game-mobile-ui .modal{
+  width:min(100%, var(--mobile-shell-max));
+  max-height:92dvh;
+  border-radius:26px 26px 0 0;
+}
+
+body.mobile-game-mobile-ui .drawer{
+  width:min(100%, var(--mobile-shell-max));
+  height:auto;
+  max-height:88dvh;
+  border-left:none;
+  border-top-left-radius:26px;
+  border-top-right-radius:26px;
+}
+
+body.mobile-game-mobile-ui .helpCard,
+body.mobile-game-mobile-ui .calcCard{
+  width:min(100%, var(--mobile-shell-max));
+  max-height:88dvh;
+  border-radius:24px;
+}
+
+body.mobile-game-mobile-ui .calcGrid{
+  gap:8px;
+}
+
+body.mobile-game-mobile-ui .badgeToast{
+  right:12px;
+  left:12px;
+  top:max(66px, calc(env(safe-area-inset-top) + 56px));
+  max-width:none;
+}
+
+/* Narrow screens */
+@media (max-width: 520px){
+  body.mobile-game-mobile-ui .top{
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "brand actions"
+      "center center";
+    align-items:start;
+    row-gap:10px;
+  }
+
+  body.mobile-game-mobile-ui .brand{ grid-area:brand; }
+  body.mobile-game-mobile-ui .topCenter{ grid-area:center; justify-content:flex-start; }
+  body.mobile-game-mobile-ui .top > .row{ grid-area:actions; justify-content:flex-end; }
+
+  body.mobile-game-mobile-ui .brandTitle{
+    font-size:17px;
+  }
+
+  body.mobile-game-mobile-ui .mapGrid{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:10px;
+  }
+
+  body.mobile-game-mobile-ui .tile{
+    aspect-ratio:0.86;
+  }
+
+  body.mobile-game-mobile-ui .aRow{
+    flex-wrap:wrap;
+  }
+
+  body.mobile-game-mobile-ui .aRow .input,
+  body.mobile-game-mobile-ui .okInline{
+    width:100%;
+  }
+
+  body.mobile-game-mobile-ui .unitChip{
+    order:2;
+  }
+
+  body.mobile-game-mobile-ui .okInline{
+    order:3;
+  }
+
+  body.mobile-game-mobile-ui .keypad{
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+  }
+
+  body.mobile-game-mobile-ui .key.wide{
+    grid-column:1 / -1;
+  }
+
+  body.mobile-game-mobile-ui .keypadSheet.geoMeasureMode .keypad,
+  body.mobile-game-mobile-ui .game.geoMeasureMode .keypadSheet .keypad{
+    grid-template-columns:repeat(4, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 380px){
+  body.mobile-game-mobile-ui .top{
+    padding:9px 10px;
+  }
+
+  body.mobile-game-mobile-ui .iconBtn{
+    width:40px;
+  }
+
+  body.mobile-game-mobile-ui .pill{
+    padding:0 10px;
+  }
+
+  body.mobile-game-mobile-ui .tileTitle{
+    font-size:14px;
+  }
+
+  body.mobile-game-mobile-ui .key{
+    height:44px;
+    font-size:18px;
+  }
+}
+
+/* Slightly larger phones / tablets */
+@media (min-width: 700px){
+  body.mobile-game-mobile-ui .shell{
+    width:min(100%, 760px);
+  }
+
+  body.mobile-game-mobile-ui .mapGrid{
+    grid-template-columns:repeat(3, minmax(0,1fr));
+  }
+
+  body.mobile-game-mobile-ui .badgeGrid{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+  }
+}
+
+
+/* =========================================================
+   Smartphone-first mobile-ui v2
+   Doel: minder gestapelde panelen, map terug als deck,
+   keypad als bottom sheet i.p.v. permanent blok.
+========================================================= */
+
+body.mobile-game-mobile-ui.mobile-device-layout{
+  --mq-sheet-peek: 52px;
+  --mq-sheet-open: min(340px, 42dvh);
+  --mq-bottom-gap: calc(var(--mq-sheet-peek) + 10px + env(safe-area-inset-bottom));
+  --mq-bottom-open-gap: calc(var(--mq-sheet-open) + 14px + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 900px){
+  body.mobile-game-mobile-ui.mobile-device-layout .stage{
+    overflow:hidden;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .screen{
+    overflow:auto;
+  }
+
+  /* Herstel de oorspronkelijke swipe-deck i.p.v. een overvolle grid */
+  body.mobile-game-mobile-ui.mobile-device-layout .map{
+    padding:8px 0 0 !important;
+    gap:10px !important;
+    grid-template-rows:auto auto 1fr !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .mapHeader{
+    padding:0 10px !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:8px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .mapDeckBar{
+    position:relative !important;
+    top:auto !important;
+    padding:0 10px 2px !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    min-height:34px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .mapGrid{
+    display:flex !important;
+    grid-template-columns:none !important;
+    gap:12px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scroll-snap-type:x mandatory !important;
+    scroll-padding-inline:max(10px, calc((100vw - min(360px, 84vw))/2)) !important;
+    padding:8px max(10px, calc((100vw - min(360px, 84vw))/2)) 18px !important;
+    align-content:stretch !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard{
+    flex:0 0 min(360px, 84vw) !important;
+    aspect-ratio:auto !important;
+    min-height:min(440px, 65vh) !important;
+    display:grid !important;
+    grid-template-rows:minmax(190px, 1fr) auto !important;
+    border-radius:28px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard .tileTop,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard .tileTop{
+    padding:16px 18px 4px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard .tileTop svg,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard .tileTop img,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard .tileTop svg,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard .tileTop img{
+    width:min(100%, 300px) !important;
+    height:auto !important;
+    max-height:min(250px, 36vh) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard .tileTitle,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard .tileTitle{
+    font-size:clamp(26px, 8.2vw, 38px) !important;
+    line-height:.96 !important;
+    padding:0 !important;
+  }
+
+  /* Game = rustiger, niet meer alles tegelijk prominent */
+  body.mobile-game-mobile-ui.mobile-device-layout #scrGame{
+    overflow:hidden !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid,
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid.game{
+    height:100% !important;
+    min-height:0 !important;
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    grid-template-rows:minmax(0, 1fr) !important;
+    gap:10px !important;
+    padding:10px 10px var(--mq-bottom-gap) !important;
+    overflow:hidden !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout.pad-open #gameGrid,
+  body.mobile-game-mobile-ui.mobile-device-layout.pad-open #gameGrid.game{
+    padding-bottom:var(--mq-bottom-open-gap) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .panel{
+    min-height:0 !important;
+    height:100% !important;
+    display:grid !important;
+    grid-template-rows:minmax(0, 1fr) auto auto !important;
+    overflow:hidden !important;
+    border-radius:24px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .panelBody{
+    min-height:0 !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #panelBodyInner{
+    height:auto !important;
+    min-height:100% !important;
+    display:grid !important;
+    grid-template-rows:auto auto minmax(0, 1fr) auto !important;
+    gap:8px !important;
+    padding:10px !important;
+    align-content:start !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #qPrompt,
+  body.mobile-game-mobile-ui.mobile-device-layout .promptBig{
+    font-size:clamp(18px, 5vw, 24px) !important;
+    line-height:1.18 !important;
+    text-align:left !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #qSub,
+  body.mobile-game-mobile-ui.mobile-device-layout .promptSub{
+    font-size:13px !important;
+    line-height:1.25 !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #visualWrap,
+  body.mobile-game-mobile-ui.mobile-device-layout .visualWrap{
+    min-height:clamp(180px, 30vh, 280px) !important;
+    height:auto !important;
+    max-height:none !important;
+    padding:8px !important;
+    overflow:auto !important;
+    border-radius:18px !important;
+    display:grid !important;
+    place-items:center !important;
+    background:linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #visualWrap img,
+  body.mobile-game-mobile-ui.mobile-device-layout #visualWrap svg:not(.geoScene),
+  body.mobile-game-mobile-ui.mobile-device-layout .visualWrap img,
+  body.mobile-game-mobile-ui.mobile-device-layout .visualWrap svg:not(.geoScene){
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #visualWrap svg.geoScene,
+  body.mobile-game-mobile-ui.mobile-device-layout .visualWrap svg.geoScene{
+    width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid.geoMeasureMode #visualWrap,
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid.geoMeasureMode .visualWrap{
+    min-height:clamp(220px, 38vh, 340px) !important;
+  }
+
+  /* Antwoordzone: niet meer kunstmatig afgeknepen */
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .answer{
+    min-height:auto !important;
+    max-height:none !important;
+    padding:8px 10px 10px !important;
+    display:grid !important;
+    gap:8px !important;
+    align-content:start !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .choices{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .choice{
+    min-height:52px !important;
+    font-size:16px !important;
+    border-radius:16px !important;
+    text-align:left !important;
+    padding:10px 12px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .aRow,
+  body.mobile-game-mobile-ui.mobile-device-layout #inputRow{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto auto !important;
+    gap:8px !important;
+    align-items:center !important;
+    flex-wrap:unset !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #mainInput{
+    min-width:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    height:50px !important;
+    font-size:20px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .unitChip,
+  body.mobile-game-mobile-ui.mobile-device-layout .okInline,
+  body.mobile-game-mobile-ui.mobile-device-layout #btnOkInline,
+  body.mobile-game-mobile-ui.mobile-device-layout #btnOkMc{
+    height:50px !important;
+    min-height:50px !important;
+    border-radius:14px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .unitChip{
+    min-width:58px !important;
+    justify-content:center !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .okInline,
+  body.mobile-game-mobile-ui.mobile-device-layout #btnOkInline{
+    min-width:88px !important;
+    white-space:nowrap !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #btnOkMc{
+    width:100% !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #status{
+    min-height:18px !important;
+    font-size:13px !important;
+    line-height:1.15 !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #trayControlsSlot{
+    padding:0 10px 10px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameControls{
+    width:100% !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameControls .gcBtn{
+    flex:1 1 0 !important;
+    width:auto !important;
+    min-width:0 !important;
+  }
+
+  /* Keypad = bottom sheet. Rustig, discoverable, niet permanent dominant. */
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet{
+    position:fixed !important;
+    left:50% !important;
+    bottom:max(8px, env(safe-area-inset-bottom)) !important;
+    transform:translateX(-50%) translateY(calc(100% - var(--mq-sheet-peek))) !important;
+    width:min(calc(100vw - 16px), var(--mobile-shell-max)) !important;
+    max-width:calc(100vw - 16px) !important;
+    height:var(--mq-sheet-open) !important;
+    min-height:var(--mq-sheet-open) !important;
+    max-height:var(--mq-sheet-open) !important;
+    display:grid !important;
+    grid-template-rows:var(--mq-sheet-peek) minmax(0, 1fr) !important;
+    overflow:hidden !important;
+    z-index:90 !important;
+    border-radius:24px !important;
+    border:1px solid rgba(226,232,240,.96) !important;
+    background:rgba(255,255,255,.98) !important;
+    box-shadow:0 20px 50px rgba(15,23,42,.20) !important;
+    transition:transform .22s ease, box-shadow .22s ease !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout.pad-open #keypadSheet{
+    transform:translateX(-50%) translateY(0) !important;
+    box-shadow:0 24px 60px rgba(15,23,42,.24) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid.mcMode #keypadSheet,
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet[style*="display: none"]{
+    display:none !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .sheetHead{
+    min-height:var(--mq-sheet-peek) !important;
+    height:var(--mq-sheet-peek) !important;
+    padding:0 14px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    background:linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%) !important;
+    border-bottom:1px solid rgba(226,232,240,.9) !important;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .sheetHead > span:first-child{
+    font-weight:900 !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .sheetMeta{
+    gap:8px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .sheetToggle{
+    width:34px !important;
+    height:34px !important;
+    min-height:34px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .keypad{
+    padding:10px 10px calc(10px + env(safe-area-inset-bottom)) !important;
+    display:grid !important;
+    grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows:minmax(0, 1fr) !important;
+    gap:8px !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    transition:opacity .16s ease !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout.pad-open #keypadSheet .keypad{
+    opacity:1 !important;
+    pointer-events:auto !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .key{
+    height:auto !important;
+    min-height:48px !important;
+    border-radius:15px !important;
+    font-size:18px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .key.wide,
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .key.ok{
+    grid-column:1 / -1 !important;
+    min-height:50px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .gcSlot{
+    display:none !important;
+  }
+}
+
+@media (max-width: 460px){
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .aRow,
+  body.mobile-game-mobile-ui.mobile-device-layout #inputRow{
+    grid-template-columns:minmax(0,1fr) auto !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .okInline,
+  body.mobile-game-mobile-ui.mobile-device-layout #btnOkInline,
+  body.mobile-game-mobile-ui.mobile-device-layout #btnOkMc{
+    grid-column:1 / -1 !important;
+    width:100% !important;
+  }
+}
+
+@media (max-width: 420px){
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard{
+    flex-basis:min(350px, 86vw) !important;
+    min-height:min(400px, 63vh) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.deckCard .tileTop svg,
+  body.mobile-game-mobile-ui.mobile-device-layout .tile.topicCard .tileTop svg{
+    max-height:min(220px, 34vh) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout .tileText{
+    padding:10px 12px 14px !important;
+    gap:8px !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid .choices{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media (max-height: 760px) and (max-width: 900px){
+  body.mobile-game-mobile-ui.mobile-device-layout{
+    --mq-sheet-open: min(300px, 40dvh);
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #visualWrap,
+  body.mobile-game-mobile-ui.mobile-device-layout .visualWrap{
+    min-height:clamp(170px, 28vh, 240px) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid.geoMeasureMode #visualWrap,
+  body.mobile-game-mobile-ui.mobile-device-layout #gameGrid.geoMeasureMode .visualWrap{
+    min-height:clamp(210px, 34vh, 300px) !important;
+  }
+
+  body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet .key{
+    min-height:44px !important;
+    font-size:17px !important;
+  }
+}
+
+/* Hidden state must win over mobile layout helpers.
+   Prevents mixed UI states like MC + input + duplicate OK rows at once. */
+body.mobile-game-mobile-ui.mobile-device-layout #choices[hidden],
+body.mobile-game-mobile-ui.mobile-device-layout #inputRow[hidden],
+body.mobile-game-mobile-ui.mobile-device-layout #mcRow[hidden],
+body.mobile-game-mobile-ui.mobile-device-layout #mainInput[hidden],
+body.mobile-game-mobile-ui.mobile-device-layout #unitChip[hidden],
+body.mobile-game-mobile-ui.mobile-device-layout #keypadSheet[hidden]{
+  display:none !important;
+}
+
+
+/* ===== Section 13 ===== */
+
+/* Unified layer: mobile action tray without breaking legacy ids */
+#scrGame [hidden] {
+  display: none !important;
+}
+
+#gameGrid.gameScreen {
+  position: relative;
+}
+
+#actionTray.actionTray {
+  position: relative;
+  z-index: 3;
+}
+
+#gameGrid.tray-compact #actionTray {
+  gap: 8px;
+}
+
+#gameGrid.tray-expanded #actionTray {
+  gap: 12px;
+}
+
+#gameGrid.keypad-open #keypadSheet {
+  display: grid;
+}
+
+body.mobile-game-mobile-ui #gameGrid.gameScreen,
+body.mobile-device-layout #gameGrid.gameScreen {
+  grid-template-columns: 1fr !important;
+  grid-template-rows: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+}
+
+body.mobile-game-mobile-ui #gameGrid .playShell,
+body.mobile-device-layout #gameGrid .playShell {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto !important;
+}
+
+body.mobile-game-mobile-ui #actionTray,
+body.mobile-device-layout #actionTray {
+  border-top: 1px solid var(--line);
+  padding: 10px 12px 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  display: grid;
+  gap: 10px;
+}
+
+body.mobile-game-mobile-ui #actionTray .choices,
+body.mobile-device-layout #actionTray .choices {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+body.mobile-game-mobile-ui #actionTray .choice,
+body.mobile-device-layout #actionTray .choice {
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+  height: auto;
+  padding: 10px 12px;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+body.mobile-game-mobile-ui #inputRow,
+body.mobile-device-layout #inputRow {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+body.mobile-game-mobile-ui #inputRow .input,
+body.mobile-device-layout #inputRow .input {
+  min-width: 0;
+  max-width: none !important;
+  width: 100%;
+}
+
+body.mobile-game-mobile-ui #mcRow.confirmRow,
+body.mobile-device-layout #mcRow.confirmRow {
+  justify-content: center;
+}
+
+body.mobile-game-mobile-ui #mcRow .btn,
+body.mobile-device-layout #mcRow .btn {
+  min-width: 140px;
+}
+
+body.mobile-game-mobile-ui #trayControlsSlot,
+body.mobile-device-layout #trayControlsSlot {
+  border-top: 1px solid var(--line);
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: transparent;
+}
+
+body.mobile-game-mobile-ui #trayControlsSlot .gameControls,
+body.mobile-device-layout #trayControlsSlot .gameControls {
+  width: 100%;
+}
+
+body.mobile-game-mobile-ui #trayControlsSlot .gcBtn,
+body.mobile-device-layout #trayControlsSlot .gcBtn {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  height: 46px;
+}
+
+body.mobile-game-mobile-ui #keypadSheet.keypadWrap,
+body.mobile-device-layout #keypadSheet.keypadWrap {
+  grid-column: 1;
+  width: 100%;
+  max-width: none;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 10px 26px rgba(15,23,42,.11);
+}
+
+body.mobile-game-mobile-ui #keypadSheet .sheetHead,
+body.mobile-device-layout #keypadSheet .sheetHead {
+  padding: 8px 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+}
+
+body.mobile-game-mobile-ui #keypadSheet .keypad,
+body.mobile-device-layout #keypadSheet .keypad {
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body.mobile-game-mobile-ui #keypadSheet .key,
+body.mobile-device-layout #keypadSheet .key {
+  min-width: 0;
+  height: 48px;
+}
+
+body.mobile-game-mobile-ui.pad-open #gameGrid.gameScreen,
+body.mobile-device-layout.pad-open #gameGrid.gameScreen {
+  grid-template-rows: minmax(0, 1fr) auto !important;
+}
+
+
+/* ===== Section 14 ===== */
+
+/* Question-mode visibility rules */
+#scrGame #choices[hidden],
+#scrGame #inputRow[hidden],
+#scrGame #mcRow[hidden],
+#scrGame #keypadSheet[hidden],
+#scrGame #unitChip[hidden],
+#scrGame #mainInput[hidden],
+#scrGame #qSub[hidden],
+#scrGame #visualWrap[hidden] {
+  display: none !important;
+}
+
+#gameGrid.mode-mc #choices {
+  display: grid;
+}
+
+#gameGrid.mode-mc #mcRow {
+  display: flex;
+}
+
+#gameGrid.mode-mc #inputRow,
+#gameGrid.mode-mc #keypadSheet {
+  display: none !important;
+}
+
+#gameGrid.mode-input #inputRow,
+#gameGrid.mode-inline #inputRow,
+#gameGrid.mode-tap #inputRow,
+#gameGrid.mode-geo #inputRow {
+  display: grid;
+}
+
+#gameGrid.mode-inline #mainInput,
+#gameGrid.mode-tap #mainInput,
+#gameGrid.mode-geo #mainInput {
+  display: none !important;
+}
+
+#gameGrid.mode-input.keypad-open #keypadSheet,
+#gameGrid.mode-inline.keypad-open #keypadSheet,
+#gameGrid.mode-geo.keypad-open #keypadSheet {
+  display: grid;
+}
+
+#gameGrid.mode-tap #keypadSheet {
+  display: none !important;
+}
+
+#gameGrid.mode-idle #choices,
+#gameGrid.mode-idle #inputRow,
+#gameGrid.mode-idle #mcRow,
+#gameGrid.mode-idle #keypadSheet {
+  display: none !important;
+}
+
+
+/* ===== Refactor v10: keypad als echte bottom tray, geen rechterkolom meer ===== */
+#scrGame #gameGrid{
+  grid-template-columns:minmax(0,1fr) !important;
+  gap:0 !important;
+}
+#scrGame #gameGrid > .panel{
+  min-height:0;
+  grid-template-rows:minmax(0,1fr) auto !important;
+}
+#scrGame #actionTray{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:10px;
+  align-items:stretch;
+}
+#scrGame #trayControlsSlot{
+  order:40;
+  border-top:0;
+  background:transparent;
+  padding:0;
+}
+#scrGame #trayControlsSlot .gameControls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+#scrGame #keypadSheet{
+  order:30;
+  width:100%;
+  max-width:none;
+  min-width:0;
+  margin:0;
+  border:0;
+  border-top:1px solid rgba(228,216,196,.85);
+  border-radius:18px;
+  box-shadow:none;
+  background:rgba(255,250,240,.78);
+  overflow:hidden;
+}
+#scrGame #keypadSheet[hidden]{
+  display:none !important;
+}
+#scrGame #keypadSheet .sheetHead{
+  padding:10px 12px;
+  min-height:46px;
+  cursor:pointer;
+}
+#scrGame #keypadSheet .keypad{
+  padding:10px 12px 12px;
+}
+body.mobile-game-mobile-ui #scrGame #keypadSheet,
+body.mobile-device-layout #scrGame #keypadSheet{
+  display:grid;
+  grid-template-rows:auto 0fr;
+  transition:grid-template-rows .18s ease, opacity .18s ease, transform .18s ease;
+  opacity:.98;
+}
+body.mobile-game-mobile-ui #scrGame #keypadSheet .keypad,
+body.mobile-device-layout #scrGame #keypadSheet .keypad{
+  min-height:0;
+  overflow:hidden;
+  padding-top:0;
+}
+body.mobile-game-mobile-ui.pad-open #scrGame #keypadSheet,
+body.mobile-device-layout.pad-open #scrGame #keypadSheet,
+#scrGame #gameGrid.mode-inline #keypadSheet,
+#scrGame #gameGrid.mode-geo #keypadSheet{
+  grid-template-rows:auto 1fr;
+}
+body.mobile-game-mobile-ui.pad-open #scrGame #keypadSheet .keypad,
+body.mobile-device-layout.pad-open #scrGame #keypadSheet .keypad,
+#scrGame #gameGrid.mode-inline #keypadSheet .keypad,
+#scrGame #gameGrid.mode-geo #keypadSheet .keypad{
+  padding-top:10px;
+}
+@media (max-width: 980px){
+  #scrGame #gameGrid{
+    height:100%;
+    overflow:hidden;
+  }
+  #scrGame #panelBodyInner{
+    min-height:0;
+  }
+  #scrGame #actionTray{
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    padding-bottom:calc(10px + env(safe-area-inset-bottom));
+  }
+  #scrGame #keypadSheet .key{
+    min-height:54px;
+  }
+}
+@media (max-width: 700px){
+  #scrGame #actionTray{
+    gap:8px;
+  }
+  #scrGame #inputRow{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    gap:8px;
+  }
+  #scrGame #mainInput{
+    max-width:none !important;
+    width:100%;
+  }
+  #scrGame #keypadSheet{
+    border-radius:16px;
+  }
+  body.mobile-game-mobile-ui #scrGame #keypadSheet,
+  body.mobile-device-layout #scrGame #keypadSheet{
+    grid-template-rows:auto 0fr;
+  }
+  body.mobile-game-mobile-ui.pad-open #scrGame #keypadSheet,
+  body.mobile-device-layout.pad-open #scrGame #keypadSheet,
+  #scrGame #gameGrid.mode-inline #keypadSheet,
+  #scrGame #gameGrid.mode-geo #keypadSheet{
+    grid-template-rows:auto 1fr;
+  }
+}

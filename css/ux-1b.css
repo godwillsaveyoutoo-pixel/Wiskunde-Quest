@@ -66,7 +66,7 @@ body::before{
   background:var(--play);
   box-shadow:0 0 0 6px rgba(255,180,59,.18);
 }
-.pill,.iconBtn,.seg,.input,.xBtn,.rpToggle,.gcBtn,.calcKey{
+.pill,.iconBtn,.seg,.input,.xBtn,.sheetToggle,.gcBtn,.calcKey{
   border-width:2px;
   border-color:var(--line);
 }
@@ -76,16 +76,16 @@ body::before{
 .btn,.segBtn,.choice,.key,.deckBtn,.mapDot{
   -webkit-tap-highlight-color:transparent;
 }
-.btn,.segBtn,.choice,.key,.gcBtn,.deckBtn,.xBtn,.iconBtn,.rpToggle,.calcKey{
+.btn,.segBtn,.choice,.key,.gcBtn,.deckBtn,.xBtn,.iconBtn,.sheetToggle,.calcKey{
   font-family:"Baloo 2", system-ui, Arial, sans-serif;
   border-width:2px;
   transition:transform .08s ease, box-shadow .12s ease, filter .12s ease;
 }
-.btn,.segBtn,.choice,.key,.gcBtn,.iconBtn,.deckBtn,.xBtn,.rpToggle{
+.btn,.segBtn,.choice,.key,.gcBtn,.iconBtn,.deckBtn,.xBtn,.sheetToggle{
   background:linear-gradient(180deg, #fffdf8, #f8efe0);
   box-shadow:0 4px 0 rgba(98,73,38,.18), 0 8px 14px rgba(84,61,32,.08);
 }
-.btn:active,.segBtn:active,.choice:active,.key:active,.gcBtn:active,.iconBtn:active,.deckBtn:active,.xBtn:active,.rpToggle:active{
+.btn:active,.segBtn:active,.choice:active,.key:active,.gcBtn:active,.iconBtn:active,.deckBtn:active,.xBtn:active,.sheetToggle:active{
   transform:translateY(2px);
   box-shadow:0 2px 0 rgba(98,73,38,.18), 0 5px 10px rgba(84,61,32,.08);
 }
@@ -344,7 +344,7 @@ body::before{
   gap:clamp(8px, 1.4vw, 14px);
   grid-template-columns:minmax(0, 1fr) minmax(285px, 330px);
 }
-.panel,.rightPanel{
+.panel,.keypadSheet{
   border:3px solid rgba(228,216,196,.92);
   border-radius:28px;
   background:rgba(255,253,247,.96);
@@ -408,7 +408,7 @@ body::before{
   font-size:clamp(16px, 1.8vw, 20px);
   line-height:1.15;
 }
-.rpHead{
+.sheetHead{
   background:linear-gradient(180deg,#fffdf7,#fbf2e4);
   border-bottom:2px solid var(--line);
   padding:10px 12px;
@@ -448,12 +448,12 @@ body::before{
     height:100%;
     overflow:auto;
   }
-  .rightPanel{
+  .keypadSheet{
     position:relative;
     overflow:visible;
   }
-  .rightPanel.noKeypad{ min-height:0; }
-  .rightPanel.noKeypad .gcSlot{ border-top:0; }
+  .keypadSheet.noKeypad{ min-height:0; }
+  .keypadSheet.noKeypad .gcSlot{ border-top:0; }
 }
 
 @media (max-width:700px){
@@ -508,7 +508,7 @@ body::before{
   .modeCard p{ display:none; }
 
   .game{ padding:6px; gap:7px; }
-  .panel,.rightPanel{ border-radius:22px; border-width:2px; }
+  .panel,.keypadSheet{ border-radius:22px; border-width:2px; }
   .panelBodyInner{ padding:9px; }
   .promptBig{ font-size:clamp(19px, 5.7vw, 25px); }
   .promptSub{ font-size:14px; }
@@ -528,8 +528,8 @@ body::before{
   .unitChip{ height:52px; min-width:54px; padding:0 9px; }
   .okInline{ height:52px; min-width:74px; padding:0 12px; }
   #btnOkMc{ width:100%; }
-  .rightPanel{ box-shadow:none; }
-  .rpHead{ padding:8px 10px; }
+  .keypadSheet{ box-shadow:none; }
+  .sheetHead{ padding:8px 10px; }
   .keypad{ gap:7px; padding:8px; }
   .key{ min-height:46px; border-radius:15px; font-size:18px; }
   .gcSlot{ padding:7px; }

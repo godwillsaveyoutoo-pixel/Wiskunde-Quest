@@ -236,6 +236,7 @@ function showScreen(id) {
   el.classList.add("active");
   APP.screen = id;
   try { document.body.dataset.screen = id; } catch(_) {}
+  try { document.dispatchEvent(new CustomEvent("app:screenchange", { detail: { id } })); } catch(_) {}
 
   // Topbar reset: buiten het spel (scrGame/scrResult) terug naar standaard titel
   const inGameFlow = (id === "scrGame" || id === "scrResult");

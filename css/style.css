@@ -696,7 +696,7 @@
   .warn{color:var(--warn)}
 
   /* Right panel keypad */
-  .rightPanel{
+  .keypadSheet{
     border:1px solid var(--line);
     border-radius: var(--r2);
     background:#fff;
@@ -705,14 +705,14 @@
     display:grid;
     grid-template-rows: auto 1fr auto;
   }
-  .rightPanel.noKeypad{
+  .keypadSheet.noKeypad{
     grid-template-rows: 1fr;
   }
-  .rightPanel.noKeypad .rpHead,
-  .rightPanel.noKeypad .keypad{
+  .keypadSheet.noKeypad .sheetHead,
+  .keypadSheet.noKeypad .keypad{
     display:none;
   }
-  .rpHead{
+  .sheetHead{
     padding: 12px 14px;
     border-bottom:1px solid var(--line);
     font-weight:900;
@@ -1368,18 +1368,18 @@
 /* =========================
    Keypad collapse
 ========================= */
-.rpHead{
+.sheetHead{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
 }
-.rpRight{
+.sheetMeta{
   display:flex;
   align-items:center;
   gap:10px;
 }
-.rpToggle{
+.sheetToggle{
   height: 30px;
   min-width: 34px;
   padding: 0 10px;
@@ -1389,8 +1389,8 @@
   font-weight: 900;
   cursor: pointer;
 }
-.rightPanel.collapsed .keypad{ display:none; }
-.rightPanel.collapsed{ padding-bottom: 10px; }
+.keypadSheet.collapsed .keypad{ display:none; }
+.keypadSheet.collapsed{ padding-bottom: 10px; }
 
 @media (max-height: 860px){
   .hudLine{ padding-top: 4px; padding-bottom: 8px; }
