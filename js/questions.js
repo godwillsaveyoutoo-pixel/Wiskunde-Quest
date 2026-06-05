@@ -8211,10 +8211,10 @@ Bekijk het staafdiagram. Wat is het gemiddelde aantal bezoekers per uur?`,
 
   tijd: (() => {
     const partOf = (h) => {
-      if (h < 6) return "'s nachts";
-      if (h < 12) return "'s morgens";
+      if (h < 6) return "nacht";
+      if (h < 12) return "ochtend";
       if (h < 18) return "na de middag";
-      return "'s avonds";
+      return "avond";
     };
 
     const analogToDigital = (h, m, ctx, skill) => () => {
@@ -8365,7 +8365,7 @@ Bekijk het staafdiagram. Wat is het gemiddelde aantal bezoekers per uur?`,
           analogToDigital(15, 10, "Na school wil Anas naar de bibliotheek.", "clock_read_easy"),
           analogToDigital(16, 5, "Na de middag begint de voetbaltraining.", "clock_read_easy"),
 
-          wordsToDigital("kwart over acht 's morgens", 8, 15, "clock_words_easy"),
+          wordsToDigital("kwart over acht in de ochtend", 8, 15, "clock_words_easy"),
           wordsToDigital("half vier na de middag", 15, 30, "clock_words_easy"),
 
           setClockFromDigital(13, 40, "clock_set_easy", 5)
@@ -8379,7 +8379,7 @@ Bekijk het staafdiagram. Wat is het gemiddelde aantal bezoekers per uur?`,
           analogToDigital(0, 15, "Het is stil in huis en iedereen slaapt.", "clock_read_normal"),
           analogToDigital(23, 40, "Laat op de avond komt de bus nog aan.", "clock_read_normal"),
 
-          wordsToDigital("kwart voor zeven 's morgens", 6, 45, "clock_words_normal"),
+          wordsToDigital("kwart voor zeven in de ochtend", 6, 45, "clock_words_normal"),
           wordsToDigital("tien over half acht 's avonds", 19, 40, "clock_words_normal"),
           wordsToDigital("tien voor twee 's nachts", 1, 50, "clock_words_normal"),
 

@@ -1,0 +1,126 @@
+
+/* UX cleanup: meerkeuze zonder keypad, rustigere vragen, fullscreen */
+
+#gameGrid.mcMode #rightPanel{
+  display:none !important;
+}
+
+#gameGrid.mcMode{
+  grid-template-columns:1fr !important;
+}
+
+#gameGrid.mcMode .panel{
+  max-width:none !important;
+}
+
+#gameGrid.mcMode .answer{
+  display:grid !important;
+  gap:8px !important;
+}
+
+#gameGrid.mcMode .choices{
+  width:100% !important;
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)) !important;
+  gap:8px !important;
+}
+
+#gameGrid.mcMode .choice{
+  min-height:52px !important;
+  height:auto !important;
+  white-space:normal !important;
+}
+
+#gameGrid.mcMode #mcRow{
+  display:flex !important;
+  justify-content:center !important;
+}
+
+#gameGrid.mcMode #btnOkMc{
+  min-width:140px !important;
+}
+
+/* Vraagtekst: minder chaos, betere chips */
+.wqHint{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:2px 8px;
+  border-radius:999px;
+  background:rgba(255,244,205,.8);
+  color:#775900;
+  font-size:.72em;
+  font-weight:850;
+  border:1px solid rgba(160,120,0,.12);
+}
+
+.wqPromptLine{
+  word-break:normal;
+  overflow-wrap:normal;
+}
+
+.wqPromptLine.main,
+.wqPromptLine.eq{
+  text-wrap:balance;
+}
+
+/* Fullscreen: topbar compacter, spel gebruikt meer hoogte */
+body.wqFullscreen #scrGame.active{
+  height:100dvh !important;
+}
+
+body.wqFullscreen .top{
+  min-height:42px !important;
+  height:42px !important;
+  padding-top:3px !important;
+  padding-bottom:3px !important;
+}
+
+body.wqFullscreen .brandTitle,
+body.wqFullscreen #pillUser,
+body.wqFullscreen #pillMode,
+body.wqFullscreen #pillHud,
+body.wqFullscreen #pillBadges{
+  font-size:12px !important;
+}
+
+body.wqFullscreen .iconBtn{
+  width:36px !important;
+  height:36px !important;
+}
+
+body.wqFullscreen .hudLine{
+  display:none !important;
+}
+
+/* Mobiel: MC-keuzes krijgen plaats, keypad helemaal weg */
+@media (max-width:900px){
+  #gameGrid.mcMode{
+    grid-template-rows:minmax(0, 1fr) !important;
+  }
+
+  #gameGrid.mcMode .panel{
+    height:100% !important;
+  }
+
+  #gameGrid.mcMode .choices{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  #gameGrid.mcMode .choice{
+    min-height:46px !important;
+    font-size:clamp(15px, 4.4vw, 19px) !important;
+  }
+
+  #gameGrid.mcMode .gcSlot{
+    display:flex !important;
+  }
+
+  body.wqFullscreen .top{
+    display:none !important;
+  }
+
+  body.wqFullscreen #scrGame.active{
+    height:100dvh !important;
+  }
+}

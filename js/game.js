@@ -489,6 +489,12 @@ function pickNonRepeated(fns, opts = {}) {
 
 /* ---------- Render MC ---------- */
 function renderMC(q) {
+  const grid = document.getElementById("gameGrid");
+  if (grid) {
+    grid.classList.add("mcMode");
+    grid.classList.remove("inputMode");
+  }
+
   q.options.forEach(opt => {
     const btn = document.createElement("button");
     btn.className = "choice";
@@ -503,19 +509,27 @@ function renderMC(q) {
   });
   $("#mcRow").style.display = "flex";
 
-  // MC: geen keypad, controls rechts
+  // MC: nooit keypad tonen. Anders wordt de layout op smartphone samengedrukt.
   try {
     const rp = $("#rightPanel");
     if (rp) {
-      rp.style.display = "grid";
-      rp.classList.add("noKeypad");
+      rp.style.display = "none";
+      rp.classList.remove("noKeypad", "geoMeasureMode");
     }
   } catch (_) {}
-  try { placeGameControls(true); } catch (_) {}
+
+  // Stop/Hulp blijven onderaan het spelpaneel, niet in een lege rechterkolom.
+  try { placeGameControls(false); } catch (_) {}
 }
 
 /* ---------- Render input ---------- */
 function renderInput(q) {
+  const grid = document.getElementById("gameGrid");
+  if (grid) {
+    grid.classList.add("inputMode");
+    grid.classList.remove("mcMode");
+  }
+
   const inp = activeInput || document.getElementById("mainInput");
   if (!inp) return;
 

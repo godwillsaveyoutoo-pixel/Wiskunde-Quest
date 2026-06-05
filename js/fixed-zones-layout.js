@@ -35,6 +35,8 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    setInterval(updateFixedZoneClasses, 350);
+    updateFixedZoneClasses();
+    document.addEventListener("click", () => setTimeout(updateFixedZoneClasses, 0));
+    window.addEventListener("resize", updateFixedZoneClasses);
   });
 })();
