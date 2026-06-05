@@ -730,12 +730,17 @@ document.addEventListener("DOMContentLoaded", () => {
     try{ localStorage.setItem("mr_pad_collapsed", on ? "1" : "0"); }catch(_){}
   };
   const autoCollapseIfNeeded = () => {
+    try {
+      const isMobile = !!window.matchMedia?.("(hover: none), (pointer: coarse), (max-width: 900px)")?.matches;
+      if (isMobile) return setCollapsed(false);
+    } catch(_) {}
     try{
       const pref = localStorage.getItem("mr_pad_collapsed");
       if (pref === "1") return setCollapsed(true);
       if (pref === "0") return setCollapsed(false);
     }catch(_){}
     if (window.innerHeight < 760) setCollapsed(true);
+    else setCollapsed(false);
   };
   padT?.addEventListener("click", () => setCollapsed(!rp.classList.contains("collapsed")));
   window.addEventListener("resize", () => {

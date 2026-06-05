@@ -1,0 +1,551 @@
+:root{
+  --mobile-shell-max: 560px;
+  --mobile-pad: 12px;
+  --mobile-card-r: 24px;
+  --mobile-soft: #eef4ff;
+  --mobile-soft-2: #f7f9ff;
+  --mobile-deep: #132238;
+  --mobile-accent-2: #60a5fa;
+}
+
+html,body{
+  min-height:100%;
+  overscroll-behavior-y:none;
+}
+
+body.mobile-game-rework{
+  background:
+    radial-gradient(80% 45% at 50% -8%, rgba(96,165,250,.28) 0%, rgba(96,165,250,0) 60%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+body.mobile-game-rework .app{
+  min-height:100dvh;
+  height:auto;
+  align-items:flex-start;
+  padding:
+    max(10px, env(safe-area-inset-top))
+    10px
+    max(10px, env(safe-area-inset-bottom));
+}
+
+body.mobile-game-rework .shell{
+  width:min(100%, var(--mobile-shell-max));
+  margin:0 auto;
+  min-height:calc(100dvh - max(20px, env(safe-area-inset-top)) - max(20px, env(safe-area-inset-bottom)));
+  gap:10px;
+}
+
+body.mobile-game-rework .top{
+  position:sticky;
+  top:max(8px, env(safe-area-inset-top));
+  z-index:40;
+  border-radius:24px;
+  padding:10px 12px;
+  background:rgba(255,255,255,.88);
+  box-shadow:0 10px 28px rgba(15,23,42,.10);
+  backdrop-filter: blur(12px);
+}
+
+body.mobile-game-rework .brandTitle{
+  font-size:18px;
+}
+
+body.mobile-game-rework .pill,
+body.mobile-game-rework .iconBtn{
+  box-shadow:0 6px 14px rgba(15,23,42,.05);
+}
+
+body.mobile-game-rework .stage{
+  border-radius:30px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 22px 50px rgba(15,23,42,.12);
+  border:1px solid rgba(226,232,240,.9);
+}
+
+body.mobile-game-rework .screen{
+  padding:0;
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.mobile-game-rework .screen.active{
+  display:block;
+}
+
+body.mobile-game-rework .center,
+body.mobile-game-rework .map,
+body.mobile-game-rework .board{
+  padding:14px;
+}
+
+body.mobile-game-rework .card,
+body.mobile-game-rework .panel,
+body.mobile-game-rework .rightPanel,
+body.mobile-game-rework .tile,
+body.mobile-game-rework .modal,
+body.mobile-game-rework .helpCard,
+body.mobile-game-rework .drawer{
+  border-radius:var(--mobile-card-r);
+}
+
+body.mobile-game-rework .card{
+  width:100%;
+  border-color:rgba(226,232,240,.95);
+  box-shadow:0 14px 28px rgba(15,23,42,.07);
+}
+
+body.mobile-game-rework .h1,
+body.mobile-game-rework h2{
+  letter-spacing:.2px;
+}
+
+/* Start screen */
+body.mobile-game-rework .startCard{
+  background:linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+body.mobile-game-rework .startHero{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+body.mobile-game-rework .questMark{
+  width:64px;
+  height:64px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  background:linear-gradient(180deg, rgba(37,99,235,.12), rgba(96,165,250,.22));
+}
+
+body.mobile-game-rework .bigPlay,
+body.mobile-game-rework .startActions .btn,
+body.mobile-game-rework .row .btn.primary.grow{
+  width:100%;
+}
+
+body.mobile-game-rework .startActions{
+  display:grid;
+  grid-template-columns:1fr;
+}
+
+/* Map */
+body.mobile-game-rework .map{
+  grid-template-rows:auto auto 1fr;
+  gap:12px;
+}
+
+body.mobile-game-rework .mapHeader,
+body.mobile-game-rework .boardTop{
+  flex-direction:column;
+  align-items:stretch;
+}
+
+body.mobile-game-rework .mapHeaderBtns,
+body.mobile-game-rework .boardTop .row{
+  width:100%;
+}
+
+body.mobile-game-rework .mapHeaderBtns .btn,
+body.mobile-game-rework .boardTop .row .btn{
+  flex:1 1 auto;
+}
+
+body.mobile-game-rework .mapDeckBar{
+  position:sticky;
+  top:0;
+  z-index:2;
+  padding:8px 10px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(243,247,255,.96), rgba(255,255,255,.96));
+  border:1px solid rgba(226,232,240,.9);
+}
+
+body.mobile-game-rework .mapGrid{
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+  align-content:start;
+}
+
+body.mobile-game-rework .tile{
+  min-height:0;
+  aspect-ratio:0.90;
+  background:linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+}
+
+body.mobile-game-rework .tileTop{
+  padding:14px 10px 0;
+}
+
+body.mobile-game-rework .tileTop svg,
+body.mobile-game-rework .tileTop img{
+  width:100%;
+  height:clamp(90px, 15vh, 132px);
+  max-height:none;
+}
+
+body.mobile-game-rework .tileTitle{
+  padding:10px 10px 14px;
+  font-size:15px;
+  line-height:1.12;
+}
+
+/* Game */
+body.mobile-game-rework #scrGame{
+  overflow:hidden;
+}
+
+body.mobile-game-rework .game{
+  height:100%;
+  min-height:0;
+  padding:12px;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-rows:minmax(0, 1fr) auto;
+  gap:10px;
+}
+
+body.mobile-game-rework .panel{
+  min-height:0;
+  display:grid;
+  grid-template-rows:minmax(0, 1fr) auto auto;
+  background:linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+}
+
+body.mobile-game-rework .panelBody{
+  min-height:0;
+}
+
+body.mobile-game-rework .panelBodyInner{
+  height:100%;
+  min-height:0;
+  padding:12px;
+  gap:10px;
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+}
+
+body.mobile-game-rework .panelBodyInner.noVisual{
+  grid-template-rows:auto auto auto;
+  justify-items:stretch;
+  align-content:center;
+}
+
+body.mobile-game-rework .promptBig{
+  font-size:clamp(18px, 4.7vw, 24px);
+  line-height:1.18;
+}
+
+body.mobile-game-rework .promptSub{
+  font-size:14px;
+}
+
+body.mobile-game-rework .visualWrap{
+  width:100%;
+  height:100%;
+  min-height:220px;
+  max-height:none;
+  padding:8px;
+  overflow:auto;
+  border-radius:20px;
+  background:linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  border:1px solid rgba(191,219,254,.9);
+}
+
+body.mobile-game-rework .visualWrap svg,
+body.mobile-game-rework .visualWrap img{
+  width:100%;
+  height:auto;
+  max-height:100%;
+}
+
+body.mobile-game-rework .answer{
+  padding:10px 12px 14px;
+  gap:10px;
+}
+
+body.mobile-game-rework .choices{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+
+body.mobile-game-rework .choice{
+  width:100%;
+  min-width:0;
+  min-height:54px;
+  height:auto;
+  padding:10px 12px;
+  justify-content:flex-start;
+  text-align:left;
+}
+
+body.mobile-game-rework .aRow{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:stretch;
+  flex-wrap:nowrap;
+}
+
+body.mobile-game-rework .aRow.clickOnly{
+  justify-content:center;
+}
+
+body.mobile-game-rework .aRow .input{
+  flex:1 1 auto;
+  min-width:0;
+  max-width:none !important;
+}
+
+body.mobile-game-rework .okInline{
+  min-width:86px;
+  flex:0 0 auto;
+}
+
+body.mobile-game-rework .unitChip{
+  flex:0 0 auto;
+}
+
+body.mobile-game-rework .gcSlot{
+  padding:10px 12px 14px;
+  background:transparent;
+}
+
+body.mobile-game-rework .gameControls{
+  width:100%;
+}
+
+body.mobile-game-rework .gcBtn{
+  flex:1 1 0;
+  width:auto;
+  min-width:0;
+  height:46px;
+}
+
+body.mobile-game-rework .rightPanel{
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 10px 26px rgba(15,23,42,.11);
+}
+
+body.mobile-game-rework .rpHead{
+  padding:8px 12px;
+  background:linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+}
+
+body.mobile-game-rework .keypad{
+  padding:10px 10px calc(10px + env(safe-area-inset-bottom));
+  display:grid;
+  grid-template-columns:repeat(5, minmax(0, 1fr));
+  gap:8px;
+}
+
+body.mobile-game-rework .key{
+  height:48px;
+  min-width:0;
+  border-radius:16px;
+  font-size:20px;
+}
+
+body.mobile-game-rework .key.wide{
+  grid-column:1 / -1;
+  height:50px;
+}
+
+body.mobile-game-rework .rightPanel.collapsed .keypad{
+  display:grid;
+}
+
+/* Geo meet mode */
+body.mobile-game-rework .game.geoMeasureMode .panelBodyInner,
+body.mobile-game-rework .panel.geoMeasureMode .panelBodyInner{
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+}
+
+body.mobile-game-rework .visualWrap.geoMeasureMode,
+body.mobile-game-rework .game.geoMeasureMode .visualWrap{
+  min-height:260px;
+  max-height:none;
+  height:100%;
+  padding:6px;
+}
+
+body.mobile-game-rework .game.geoMeasureMode .visualWrap svg.geoScene,
+body.mobile-game-rework .visualWrap.geoMeasureMode svg.geoScene{
+  width:100%;
+  max-height:none;
+}
+
+body.mobile-game-rework .rightPanel.geoMeasureMode .keypad,
+body.mobile-game-rework .game.geoMeasureMode .rightPanel .keypad{
+  grid-template-columns:repeat(6, minmax(0,1fr));
+}
+
+body.mobile-game-rework .rightPanel.geoMeasureMode .key,
+body.mobile-game-rework .game.geoMeasureMode .rightPanel .key{
+  height:42px;
+  font-size:17px;
+}
+
+body.mobile-game-rework .rightPanel.geoMeasureMode .key.wide,
+body.mobile-game-rework .game.geoMeasureMode .rightPanel .key.wide{
+  grid-column:1 / -1;
+}
+
+/* Other screens */
+body.mobile-game-rework .tableWrap{
+  max-height:none;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+body.mobile-game-rework .badgeGrid{
+  grid-template-columns:1fr;
+}
+
+body.mobile-game-rework .wideScreen .card,
+body.mobile-game-rework .badgeScreen .card{
+  height:auto;
+  min-height:100%;
+}
+
+body.mobile-game-rework .modalBack,
+body.mobile-game-rework .drawerBackdrop{
+  align-items:flex-end;
+}
+
+body.mobile-game-rework .modal{
+  width:min(100%, var(--mobile-shell-max));
+  max-height:92dvh;
+  border-radius:26px 26px 0 0;
+}
+
+body.mobile-game-rework .drawer{
+  width:min(100%, var(--mobile-shell-max));
+  height:auto;
+  max-height:88dvh;
+  border-left:none;
+  border-top-left-radius:26px;
+  border-top-right-radius:26px;
+}
+
+body.mobile-game-rework .helpCard,
+body.mobile-game-rework .calcCard{
+  width:min(100%, var(--mobile-shell-max));
+  max-height:88dvh;
+  border-radius:24px;
+}
+
+body.mobile-game-rework .calcGrid{
+  gap:8px;
+}
+
+body.mobile-game-rework .badgeToast{
+  right:12px;
+  left:12px;
+  top:max(66px, calc(env(safe-area-inset-top) + 56px));
+  max-width:none;
+}
+
+/* Narrow screens */
+@media (max-width: 520px){
+  body.mobile-game-rework .top{
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "brand actions"
+      "center center";
+    align-items:start;
+    row-gap:10px;
+  }
+
+  body.mobile-game-rework .brand{ grid-area:brand; }
+  body.mobile-game-rework .topCenter{ grid-area:center; justify-content:flex-start; }
+  body.mobile-game-rework .top > .row{ grid-area:actions; justify-content:flex-end; }
+
+  body.mobile-game-rework .brandTitle{
+    font-size:17px;
+  }
+
+  body.mobile-game-rework .mapGrid{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:10px;
+  }
+
+  body.mobile-game-rework .tile{
+    aspect-ratio:0.86;
+  }
+
+  body.mobile-game-rework .aRow{
+    flex-wrap:wrap;
+  }
+
+  body.mobile-game-rework .aRow .input,
+  body.mobile-game-rework .okInline{
+    width:100%;
+  }
+
+  body.mobile-game-rework .unitChip{
+    order:2;
+  }
+
+  body.mobile-game-rework .okInline{
+    order:3;
+  }
+
+  body.mobile-game-rework .keypad{
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+  }
+
+  body.mobile-game-rework .key.wide{
+    grid-column:1 / -1;
+  }
+
+  body.mobile-game-rework .rightPanel.geoMeasureMode .keypad,
+  body.mobile-game-rework .game.geoMeasureMode .rightPanel .keypad{
+    grid-template-columns:repeat(4, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 380px){
+  body.mobile-game-rework .top{
+    padding:9px 10px;
+  }
+
+  body.mobile-game-rework .iconBtn{
+    width:40px;
+  }
+
+  body.mobile-game-rework .pill{
+    padding:0 10px;
+  }
+
+  body.mobile-game-rework .tileTitle{
+    font-size:14px;
+  }
+
+  body.mobile-game-rework .key{
+    height:44px;
+    font-size:18px;
+  }
+}
+
+/* Slightly larger phones / tablets */
+@media (min-width: 700px){
+  body.mobile-game-rework .shell{
+    width:min(100%, 760px);
+  }
+
+  body.mobile-game-rework .mapGrid{
+    grid-template-columns:repeat(3, minmax(0,1fr));
+  }
+
+  body.mobile-game-rework .badgeGrid{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+  }
+}
