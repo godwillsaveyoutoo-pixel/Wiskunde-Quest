@@ -1,0 +1,416 @@
+
+/* Fixed Zones Layout
+   Eén rustige schermverdeling:
+   - boven/links: vraag + visualisatie
+   - midden/onder: antwoord
+   - rechts/onder: keypad
+   Geen MutationObserver, geen geforceerde inline JS. */
+
+:root{
+  --game-gap: 10px;
+  --answer-zone-h: 82px;
+  --keypad-zone-w: 320px;
+}
+
+/* Desktop/laptop */
+@media (min-width: 901px){
+  #scrGame.active{
+    height: calc(100dvh - 76px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid.game,
+  #gameGrid{
+    height: 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) var(--keypad-zone-w) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: var(--game-gap) !important;
+    padding: 10px 12px !important;
+    align-items: stretch !important;
+  }
+
+  #gameGrid .panel{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto auto !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid .panelBody{
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #panelBodyInner{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    align-content: stretch !important;
+  }
+
+  #qPrompt{
+    align-self: center !important;
+  }
+
+  #visualWrap{
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow: auto !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 10px !important;
+  }
+
+  #visualWrap img{
+    max-height: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  #visualWrap svg{
+    max-height: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  #visualWrap svg.geoScene{
+    height: 100% !important;
+    width: 100% !important;
+    max-height: none !important;
+  }
+
+  #gameGrid .answer{
+    min-height: var(--answer-zone-h) !important;
+    padding: 10px 12px !important;
+    display: grid !important;
+    align-content: center !important;
+  }
+
+  #rightPanel{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  #rightPanel .keypad{
+    min-height: 0 !important;
+    align-content: center !important;
+  }
+}
+
+/* Smartphone/tablet: vaste zones onder elkaar */
+@media (max-width: 900px){
+  #scrGame.active{
+    height: calc(100dvh - 74px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid.game,
+  #gameGrid{
+    height: 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    gap: 6px !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+  }
+
+  #gameGrid .panel{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+  }
+
+  #gameGrid .panelBody{
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #panelBodyInner{
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    gap: 6px !important;
+    padding: 8px !important;
+    align-content: stretch !important;
+  }
+
+  #qPrompt,
+  .promptBig{
+    font-size: clamp(22px, 6.5vw, 30px) !important;
+    line-height: 1.1 !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+
+  #qPrompt.richPrompt .wqPrompt,
+  #qPrompt.richPrompt .mqPrompt{
+    gap: 5px !important;
+  }
+
+  #qPrompt.richPrompt .wqPromptKicker,
+  #qPrompt.richPrompt .mqPromptKicker{
+    font-size: 10px !important;
+    padding: 2px 8px !important;
+  }
+
+  #qPrompt.richPrompt .wqPromptLine.main,
+  #qPrompt.richPrompt .mqPromptMain,
+  #qPrompt.richPrompt .mqPromptLine.ask{
+    font-size: clamp(20px, 5.8vw, 27px) !important;
+    line-height: 1.1 !important;
+  }
+
+  #qPrompt.richPrompt .wqPromptLine.sub,
+  #qPrompt.richPrompt .mqPromptSubline,
+  #qPrompt.richPrompt .mqPromptLine.context{
+    font-size: clamp(16px, 4.5vw, 21px) !important;
+    line-height: 1.14 !important;
+  }
+
+  #qSub{
+    font-size: 13px !important;
+    min-height: 0 !important;
+  }
+
+  /* Deze zone krijgt alle resterende ruimte */
+  #visualWrap{
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: auto !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 6px !important;
+    border-radius: 17px !important;
+  }
+
+  /* Forceer oude inline icon-wrapper groter, maar binnen de visuele zone */
+  #visualWrap .svgSafeWrap{
+    width: min(70vw, 300px) !important;
+    max-width: 100% !important;
+  }
+
+  #visualWrap .svgSafeWrap img,
+  #visualWrap img{
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  #visualWrap svg:not(.geoScene){
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    height: auto !important;
+  }
+
+  #visualWrap .measureScene,
+  #visualWrap .vizCard{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #visualWrap .measureCard,
+  #visualWrap .vizCard{
+    padding: 6px !important;
+    border-radius: 16px !important;
+  }
+
+  #visualWrap .measureCaption,
+  #visualWrap .vizCaption{
+    display: none !important;
+  }
+
+  #visualWrap svg.geoScene{
+    width: 100% !important;
+    height: auto !important;
+    max-height: 100% !important;
+  }
+
+  /* Antwoordzone: vast en compact */
+  #gameGrid .answer{
+    flex: 0 0 auto !important;
+    min-height: 54px !important;
+    max-height: 78px !important;
+    padding: 6px 7px !important;
+    display: grid !important;
+    align-content: center !important;
+    gap: 5px !important;
+  }
+
+  #gameGrid .aRow{
+    gap: 5px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #mainInput{
+    height: 42px !important;
+    min-height: 42px !important;
+    font-size: 22px !important;
+    flex: 1 1 auto !important;
+    max-width: none !important;
+  }
+
+  .unitChip,
+  .okInline,
+  #btnOkInline,
+  #btnOkMc{
+    height: 42px !important;
+    min-height: 42px !important;
+    border-radius: 14px !important;
+  }
+
+  .unitChip{
+    min-width: 46px !important;
+    padding: 0 8px !important;
+    font-size: 17px !important;
+  }
+
+  .okInline,
+  #btnOkInline,
+  #btnOkMc{
+    min-width: 74px !important;
+    padding: 0 10px !important;
+    font-size: 17px !important;
+  }
+
+  #status{
+    min-height: 14px !important;
+    font-size: 13px !important;
+    line-height: 1.05 !important;
+  }
+
+  /* Keypadzone: vast onderaan, niet meer dominant */
+  #rightPanel{
+    height: 30dvh !important;
+    max-height: 250px !important;
+    min-height: 170px !important;
+    display: grid !important;
+    grid-template-rows: 28px minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+  }
+
+  #rightPanel .rpHead{
+    min-height: 28px !important;
+    height: 28px !important;
+    padding: 3px 8px !important;
+    font-size: 14px !important;
+  }
+
+  #rightPanel .rpHead strong,
+  #rightPanel .rpHead span{
+    font-size: 14px !important;
+  }
+
+  #rightPanel .rpToggle{
+    width: 34px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+  }
+
+  #rightPanel .keypad{
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 5px !important;
+  }
+
+  #rightPanel .key{
+    min-height: 0 !important;
+    height: auto !important;
+    border-radius: 11px !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+  }
+
+  #rightPanel .key.ok{
+    grid-column: 1 / -1 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    font-size: 16px !important;
+  }
+
+  #rightPanel .gcSlot{
+    display: none !important;
+  }
+
+  .choices{
+    gap: 6px !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .choice{
+    min-height: 44px !important;
+    font-size: clamp(15px, 4.4vw, 19px) !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* Lage smartphone: nog iets meer naar opgave, minder naar keypad */
+@media (max-width: 900px) and (max-height: 760px){
+  #scrGame.active{
+    height: calc(100dvh - 66px) !important;
+  }
+
+  #rightPanel{
+    height: 26dvh !important;
+    min-height: 140px !important;
+    max-height: 210px !important;
+  }
+
+  #rightPanel .keypad{
+    gap: 3px !important;
+    padding: 4px !important;
+  }
+
+  #rightPanel .key{
+    font-size: 14px !important;
+  }
+
+  #gameGrid .answer{
+    min-height: 48px !important;
+    max-height: 68px !important;
+  }
+
+  #mainInput,
+  .unitChip,
+  .okInline,
+  #btnOkInline,
+  #btnOkMc{
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+}
+
+/* MC-vragen hebben geen keypad nodig */
+@media (max-width: 900px){
+  #gameGrid.mcMode #rightPanel{
+    display: none !important;
+  }
+}
