@@ -263,14 +263,20 @@ function nextQuestion() {
   const ratioInputs = document.querySelectorAll("[data-ratio-input]");
   if (ratioInputs.length) {
     ratioInputs.forEach(inp => {
+      prepareGameKeypadInput(inp, true);
       inp.addEventListener("focus", () => {
+        activeInput = inp;
+      });
+      inp.addEventListener("pointerdown", () => {
         activeInput = inp;
       });
     });
 
-    // automatisch eerste ratio-input focussen
+    // Op smartphone NIET automatisch focussen, want dat kan het telefoontoetsenbord openen.
     activeInput = ratioInputs[0];
-    ratioInputs[0].focus();
+    if (!shouldUseGameKeypadOnly()) {
+      ratioInputs[0].focus();
+    }
   }
 
   schedulePanelBodyFit();
@@ -574,6 +580,10 @@ function renderInput(q) {
       hasFracInputs
     );
 
+  // Op smartphone: geen native Android/iOS-keyboard. De game-keypad is de enige invoer.
+  prepareGameKeypadInput(inp, wantsKeypad && !inline && !clickOnly);
+  prepareAllInlineGameInputs(wantsKeypad);
+
   const rp = $("#rightPanel");
   const isGeoMeasure = !!document.getElementById("gameGrid")?.classList.contains("geoMeasureMode");
   if (rp) {
@@ -625,6 +635,63 @@ function formatCorrectAnswer(q) {
   if (q.inputKind === "fraction") return String(q.answer ?? "");
   if (typeof q.answer === "number") return formatNL(q.answer) + unit;
   return String(q.answer ?? "") + unit;
+}
+
+
+/* ---------- Mobile: gebruik game-keypad, geen telefoon-keyboard ---------- */
+function shouldUseGameKeypadOnly() {
+  try {
+    return !!window.matchMedia?.("(hover: none), (pointer: coarse), (max-width: 900px)")?.matches;
+  } catch (_) {
+    return false;
+  }
+}
+
+function prepareGameKeypadInput(el, wantsKeypad = true) {
+  if (!el) return;
+  const lock = !!wantsKeypad && shouldUseGameKeypadOnly();
+
+  if (lock) {
+    el.readOnly = true;
+    el.setAttribute("readonly", "readonly");
+    el.setAttribute("inputmode", "none");
+    el.inputMode = "none";
+    el.autocomplete = "off";
+    el.spellcheck = false;
+    el.classList.add("gameNoNativeKeyboard");
+
+    if (el.dataset.noNativeKeyboardBound !== "1") {
+      el.dataset.noNativeKeyboardBound = "1";
+
+      el.addEventListener("pointerdown", (e) => {
+        // Niet het Android/iOS-keyboard openen; wel dit veld als doel voor de game-keypad gebruiken.
+        activeInput = el;
+        e.preventDefault();
+        try { el.focus({ preventScroll: true }); } catch (_) { try { el.focus(); } catch (_) {} }
+      }, { passive: false });
+
+      el.addEventListener("click", (e) => {
+        activeInput = el;
+        if (shouldUseGameKeypadOnly()) e.preventDefault();
+      });
+
+      el.addEventListener("focus", () => {
+        activeInput = el;
+      });
+    }
+  } else {
+    if (el.classList.contains("gameNoNativeKeyboard")) {
+      el.readOnly = false;
+      el.removeAttribute("readonly");
+      el.classList.remove("gameNoNativeKeyboard");
+    }
+  }
+}
+
+function prepareAllInlineGameInputs(wantsKeypad = true) {
+  document
+    .querySelectorAll("[data-ratio-input], .fraction-overlay input")
+    .forEach((el) => prepareGameKeypadInput(el, wantsKeypad));
 }
 
 
@@ -825,8 +892,10 @@ function submitAnswer() {
       $("#status").className = "status err";
       state.submitLocked = false;
       try {
-        $("#mainInput")?.focus();
-        $("#mainInput")?.select();
+        if (!shouldUseGameKeypadOnly()) {
+          $("#mainInput")?.focus();
+          $("#mainInput")?.select();
+        }
       } catch (_) {}
       return;
     }

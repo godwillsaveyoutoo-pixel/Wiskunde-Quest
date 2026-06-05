@@ -1,0 +1,21 @@
+
+/* No native keyboard patch */
+.gameNoNativeKeyboard{
+  caret-color: transparent !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: manipulation !important;
+}
+
+/* Maak duidelijk dat het veld via de game-keypad wordt ingevuld */
+.gameNoNativeKeyboard:focus{
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(255, 190, 70, .24), inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+
+@media (max-width:900px){
+  #mainInput.gameNoNativeKeyboard::placeholder{
+    opacity:.52;
+  }
+}
