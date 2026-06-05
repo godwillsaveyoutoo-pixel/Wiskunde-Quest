@@ -549,3 +549,423 @@ body.mobile-game-rework .badgeToast{
     grid-template-columns:repeat(2, minmax(0,1fr));
   }
 }
+
+
+/* =========================================================
+   Smartphone-first rework v2
+   Doel: minder gestapelde panelen, map terug als deck,
+   keypad als bottom sheet i.p.v. permanent blok.
+========================================================= */
+
+body.mobile-game-rework.mobile-device-layout{
+  --mq-sheet-peek: 52px;
+  --mq-sheet-open: min(340px, 42dvh);
+  --mq-bottom-gap: calc(var(--mq-sheet-peek) + 10px + env(safe-area-inset-bottom));
+  --mq-bottom-open-gap: calc(var(--mq-sheet-open) + 14px + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 900px){
+  body.mobile-game-rework.mobile-device-layout .stage{
+    overflow:hidden;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .screen{
+    overflow:auto;
+  }
+
+  /* Herstel de oorspronkelijke swipe-deck i.p.v. een overvolle grid */
+  body.mobile-game-rework.mobile-device-layout .map{
+    padding:8px 0 0 !important;
+    gap:10px !important;
+    grid-template-rows:auto auto 1fr !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .mapHeader{
+    padding:0 10px !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:8px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .mapDeckBar{
+    position:relative !important;
+    top:auto !important;
+    padding:0 10px 2px !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    min-height:34px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .mapGrid{
+    display:flex !important;
+    grid-template-columns:none !important;
+    gap:12px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scroll-snap-type:x mandatory !important;
+    scroll-padding-inline:max(10px, calc((100vw - min(360px, 84vw))/2)) !important;
+    padding:8px max(10px, calc((100vw - min(360px, 84vw))/2)) 18px !important;
+    align-content:stretch !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard{
+    flex:0 0 min(360px, 84vw) !important;
+    aspect-ratio:auto !important;
+    min-height:min(440px, 65vh) !important;
+    display:grid !important;
+    grid-template-rows:minmax(190px, 1fr) auto !important;
+    border-radius:28px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard .tileTop,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard .tileTop{
+    padding:16px 18px 4px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard .tileTop svg,
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard .tileTop img,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard .tileTop svg,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard .tileTop img{
+    width:min(100%, 300px) !important;
+    height:auto !important;
+    max-height:min(250px, 36vh) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard .tileTitle,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard .tileTitle{
+    font-size:clamp(26px, 8.2vw, 38px) !important;
+    line-height:.96 !important;
+    padding:0 !important;
+  }
+
+  /* Game = rustiger, niet meer alles tegelijk prominent */
+  body.mobile-game-rework.mobile-device-layout #scrGame{
+    overflow:hidden !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid,
+  body.mobile-game-rework.mobile-device-layout #gameGrid.game{
+    height:100% !important;
+    min-height:0 !important;
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    grid-template-rows:minmax(0, 1fr) !important;
+    gap:10px !important;
+    padding:10px 10px var(--mq-bottom-gap) !important;
+    overflow:hidden !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout.pad-open #gameGrid,
+  body.mobile-game-rework.mobile-device-layout.pad-open #gameGrid.game{
+    padding-bottom:var(--mq-bottom-open-gap) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid .panel{
+    min-height:0 !important;
+    height:100% !important;
+    display:grid !important;
+    grid-template-rows:minmax(0, 1fr) auto auto !important;
+    overflow:hidden !important;
+    border-radius:24px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid .panelBody{
+    min-height:0 !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #panelBodyInner{
+    height:auto !important;
+    min-height:100% !important;
+    display:grid !important;
+    grid-template-rows:auto auto minmax(0, 1fr) auto !important;
+    gap:8px !important;
+    padding:10px !important;
+    align-content:start !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #qPrompt,
+  body.mobile-game-rework.mobile-device-layout .promptBig{
+    font-size:clamp(18px, 5vw, 24px) !important;
+    line-height:1.18 !important;
+    text-align:left !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #qSub,
+  body.mobile-game-rework.mobile-device-layout .promptSub{
+    font-size:13px !important;
+    line-height:1.25 !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #visualWrap,
+  body.mobile-game-rework.mobile-device-layout .visualWrap{
+    min-height:clamp(180px, 30vh, 280px) !important;
+    height:auto !important;
+    max-height:none !important;
+    padding:8px !important;
+    overflow:auto !important;
+    border-radius:18px !important;
+    display:grid !important;
+    place-items:center !important;
+    background:linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #visualWrap img,
+  body.mobile-game-rework.mobile-device-layout #visualWrap svg:not(.geoScene),
+  body.mobile-game-rework.mobile-device-layout .visualWrap img,
+  body.mobile-game-rework.mobile-device-layout .visualWrap svg:not(.geoScene){
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #visualWrap svg.geoScene,
+  body.mobile-game-rework.mobile-device-layout .visualWrap svg.geoScene{
+    width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid.geoMeasureMode #visualWrap,
+  body.mobile-game-rework.mobile-device-layout #gameGrid.geoMeasureMode .visualWrap{
+    min-height:clamp(220px, 38vh, 340px) !important;
+  }
+
+  /* Antwoordzone: niet meer kunstmatig afgeknepen */
+  body.mobile-game-rework.mobile-device-layout #gameGrid .answer{
+    min-height:auto !important;
+    max-height:none !important;
+    padding:8px 10px 10px !important;
+    display:grid !important;
+    gap:8px !important;
+    align-content:start !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid .choices{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid .choice{
+    min-height:52px !important;
+    font-size:16px !important;
+    border-radius:16px !important;
+    text-align:left !important;
+    padding:10px 12px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid .aRow,
+  body.mobile-game-rework.mobile-device-layout #inputRow{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto auto !important;
+    gap:8px !important;
+    align-items:center !important;
+    flex-wrap:unset !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #mainInput{
+    min-width:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    height:50px !important;
+    font-size:20px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .unitChip,
+  body.mobile-game-rework.mobile-device-layout .okInline,
+  body.mobile-game-rework.mobile-device-layout #btnOkInline,
+  body.mobile-game-rework.mobile-device-layout #btnOkMc{
+    height:50px !important;
+    min-height:50px !important;
+    border-radius:14px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .unitChip{
+    min-width:58px !important;
+    justify-content:center !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .okInline,
+  body.mobile-game-rework.mobile-device-layout #btnOkInline{
+    min-width:88px !important;
+    white-space:nowrap !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #btnOkMc{
+    width:100% !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #status{
+    min-height:18px !important;
+    font-size:13px !important;
+    line-height:1.15 !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gcSlotBottom{
+    padding:0 10px 10px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameControls{
+    width:100% !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameControls .gcBtn{
+    flex:1 1 0 !important;
+    width:auto !important;
+    min-width:0 !important;
+  }
+
+  /* Keypad = bottom sheet. Rustig, discoverable, niet permanent dominant. */
+  body.mobile-game-rework.mobile-device-layout #rightPanel{
+    position:fixed !important;
+    left:50% !important;
+    bottom:max(8px, env(safe-area-inset-bottom)) !important;
+    transform:translateX(-50%) translateY(calc(100% - var(--mq-sheet-peek))) !important;
+    width:min(calc(100vw - 16px), var(--mobile-shell-max)) !important;
+    max-width:calc(100vw - 16px) !important;
+    height:var(--mq-sheet-open) !important;
+    min-height:var(--mq-sheet-open) !important;
+    max-height:var(--mq-sheet-open) !important;
+    display:grid !important;
+    grid-template-rows:var(--mq-sheet-peek) minmax(0, 1fr) !important;
+    overflow:hidden !important;
+    z-index:90 !important;
+    border-radius:24px !important;
+    border:1px solid rgba(226,232,240,.96) !important;
+    background:rgba(255,255,255,.98) !important;
+    box-shadow:0 20px 50px rgba(15,23,42,.20) !important;
+    transition:transform .22s ease, box-shadow .22s ease !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout.pad-open #rightPanel{
+    transform:translateX(-50%) translateY(0) !important;
+    box-shadow:0 24px 60px rgba(15,23,42,.24) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid.mcMode #rightPanel,
+  body.mobile-game-rework.mobile-device-layout #rightPanel[style*="display: none"]{
+    display:none !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .rpHead{
+    min-height:var(--mq-sheet-peek) !important;
+    height:var(--mq-sheet-peek) !important;
+    padding:0 14px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    background:linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%) !important;
+    border-bottom:1px solid rgba(226,232,240,.9) !important;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .rpHead > span:first-child{
+    font-weight:900 !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .rpRight{
+    gap:8px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .rpToggle{
+    width:34px !important;
+    height:34px !important;
+    min-height:34px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .keypad{
+    padding:10px 10px calc(10px + env(safe-area-inset-bottom)) !important;
+    display:grid !important;
+    grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows:minmax(0, 1fr) !important;
+    gap:8px !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    transition:opacity .16s ease !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout.pad-open #rightPanel .keypad{
+    opacity:1 !important;
+    pointer-events:auto !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .key{
+    height:auto !important;
+    min-height:48px !important;
+    border-radius:15px !important;
+    font-size:18px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .key.wide,
+  body.mobile-game-rework.mobile-device-layout #rightPanel .key.ok{
+    grid-column:1 / -1 !important;
+    min-height:50px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .gcSlot{
+    display:none !important;
+  }
+}
+
+@media (max-width: 460px){
+  body.mobile-game-rework.mobile-device-layout #gameGrid .aRow,
+  body.mobile-game-rework.mobile-device-layout #inputRow{
+    grid-template-columns:minmax(0,1fr) auto !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .okInline,
+  body.mobile-game-rework.mobile-device-layout #btnOkInline,
+  body.mobile-game-rework.mobile-device-layout #btnOkMc{
+    grid-column:1 / -1 !important;
+    width:100% !important;
+  }
+}
+
+@media (max-width: 420px){
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard{
+    flex-basis:min(350px, 86vw) !important;
+    min-height:min(400px, 63vh) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .tile.deckCard .tileTop svg,
+  body.mobile-game-rework.mobile-device-layout .tile.topicCard .tileTop svg{
+    max-height:min(220px, 34vh) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout .tileText{
+    padding:10px 12px 14px !important;
+    gap:8px !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid .choices{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media (max-height: 760px) and (max-width: 900px){
+  body.mobile-game-rework.mobile-device-layout{
+    --mq-sheet-open: min(300px, 40dvh);
+  }
+
+  body.mobile-game-rework.mobile-device-layout #visualWrap,
+  body.mobile-game-rework.mobile-device-layout .visualWrap{
+    min-height:clamp(170px, 28vh, 240px) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #gameGrid.geoMeasureMode #visualWrap,
+  body.mobile-game-rework.mobile-device-layout #gameGrid.geoMeasureMode .visualWrap{
+    min-height:clamp(210px, 34vh, 300px) !important;
+  }
+
+  body.mobile-game-rework.mobile-device-layout #rightPanel .key{
+    min-height:44px !important;
+    font-size:17px !important;
+  }
+}
