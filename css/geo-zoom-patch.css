@@ -1,0 +1,41 @@
+
+/* Geo zoom patch: zoom de volledige geoScene, dus lijn/hoek + geodriehoek samen. */
+
+.visualWrap svg.geoScene{
+  cursor: zoom-in;
+  touch-action: none;
+}
+
+.visualWrap svg.geoScene.isPanning,
+.visualWrap svg.geoScene.isPinching{
+  cursor: grabbing;
+}
+
+.geoZoomHint{
+  position:absolute;
+  right:10px;
+  bottom:10px;
+  z-index:4;
+  pointer-events:none;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(120,150,190,.22);
+  color:#5f748c;
+  font-weight:900;
+  font-size:11px;
+  box-shadow:0 8px 18px rgba(20,40,80,.08);
+}
+
+#gameGrid.geoMeasureMode .visualWrap{
+  position:relative;
+}
+
+@media (max-width:700px){
+  .geoZoomHint{
+    font-size:10px;
+    right:8px;
+    bottom:8px;
+    padding:4px 8px;
+  }
+}

@@ -1,0 +1,171 @@
+
+/* Inhoud > maatbeker patch */
+#qPrompt.richPrompt{ width:100%; }
+.mqPrompt{
+  display:grid;
+  gap:8px;
+  width:100%;
+  max-width:780px;
+  margin:0 auto;
+  text-align:center;
+}
+.mqPromptKicker{
+  justify-self:center;
+  padding:4px 12px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#fff8d8,#ffe98e);
+  color:#7a5600;
+  border:1px solid rgba(122,86,0,.14);
+  box-shadow:0 8px 18px rgba(122,86,0,.08);
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.mqPromptMain{
+  font-size:clamp(20px, 3vw, 30px);
+  line-height:1.18;
+  font-weight:800;
+  color:#15324b;
+}
+.mqPromptSubline{
+  font-size:clamp(14px, 1.8vw, 18px);
+  line-height:1.3;
+  font-weight:700;
+  color:#4a6781;
+}
+.mqPromptMain .mqVal,
+.mqPromptSubline .mqVal{
+  display:inline-block;
+  padding:1px 8px 2px;
+  border-radius:12px;
+  background:linear-gradient(180deg,#ffffff,#eff7ff);
+  border:1px solid rgba(59,130,246,.18);
+  color:#0f3f76;
+  box-shadow:0 6px 14px rgba(59,130,246,.10);
+}
+.mqPromptMain .mqUnit,
+.mqPromptSubline .mqUnit{
+  display:inline-block;
+  padding:2px 10px 3px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#4aa2ff,#2e77ff);
+  color:white;
+  font-weight:900;
+  box-shadow:0 10px 18px rgba(46,119,255,.18);
+}
+.mqPromptMain .mqBlank,
+.mqPromptSubline .mqBlank{
+  display:inline-block;
+  min-width:72px;
+  text-align:center;
+  padding:2px 8px 4px;
+  border-radius:12px;
+  border:2px dashed rgba(46,119,255,.35);
+  background:rgba(255,255,255,.65);
+  color:#2e77ff;
+  font-weight:900;
+}
+.visualWrap .measureScene{
+  width:min(100%, 520px);
+  margin-inline:auto;
+}
+.visualWrap .measureCard{
+  border-radius:28px;
+  padding:14px;
+  background:linear-gradient(180deg,#f7fbff,#eef5ff 55%, #f8fbff);
+  box-shadow:0 16px 36px rgba(23,49,92,.12), inset 0 1px 0 rgba(255,255,255,.75);
+  border:1px solid rgba(110,153,223,.16);
+}
+.visualWrap .measureCaption{
+  margin-top:10px;
+  text-align:center;
+  font-size:13px;
+  font-weight:800;
+  color:#69819b;
+}
+@media (max-width: 700px){
+  .mqPrompt{gap:6px}
+  .mqPromptMain{font-size:clamp(18px, 5.4vw, 24px)}
+  .mqPromptSubline{font-size:14px}
+  .visualWrap .measureScene{width:min(100%, 420px)}
+}
+
+
+/* Compacte inhoudsvragen: situatie + vraag in 2 regels */
+.mqPrompt.measureQuestion{
+  gap:10px;
+}
+.mqPromptLine{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  line-height:1.22;
+}
+.mqPromptLine.context{
+  font-size:clamp(18px, 2.6vw, 25px);
+  font-weight:800;
+  color:#1a3955;
+}
+.mqPromptLine.ask{
+  font-size:clamp(21px, 3.2vw, 32px);
+  font-weight:900;
+  color:#102b43;
+}
+.mqMeasure{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+  padding:2px 5px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#ffffff,#edf7ff);
+  border:1px solid rgba(59,130,246,.18);
+  box-shadow:0 7px 16px rgba(59,130,246,.10);
+  white-space:nowrap;
+}
+.mqMeasure .mqVal{
+  padding:0 2px;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  font-weight:950;
+  color:#0c4f93;
+}
+.mqMeasure .mqUnit{
+  padding:2px 8px 3px;
+  background:linear-gradient(180deg,#4aa2ff,#2e77ff);
+  color:#fff;
+  border-radius:999px;
+  font-size:.82em;
+  font-weight:950;
+  box-shadow:0 7px 14px rgba(46,119,255,.18);
+}
+.mqQuestionUnit{
+  display:inline-flex;
+  padding:3px 11px 4px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#ffe35e,#ffbd2e);
+  color:#6a4300;
+  font-weight:950;
+  box-shadow:0 9px 16px rgba(255,189,46,.18);
+  border:1px solid rgba(130,82,0,.10);
+}
+.mqEquation{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.66);
+  border:1px solid rgba(59,130,246,.14);
+  box-shadow:0 8px 18px rgba(21,54,92,.08);
+}
+@media (max-width:700px){
+  .mqPromptLine.context{font-size:clamp(17px,5vw,22px)}
+  .mqPromptLine.ask{font-size:clamp(20px,6vw,27px)}
+  .mqEquation{padding:7px 9px; gap:6px}
+}

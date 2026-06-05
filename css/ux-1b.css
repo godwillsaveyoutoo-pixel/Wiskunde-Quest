@@ -1,0 +1,576 @@
+/* =========================================================
+   1B UX refit – art-preserving layer
+   - behoudt bestaande SVG-iconen en vraaglogica
+   - maakt start, topickeuze en spelen duidelijker op smartphone
+========================================================= */
+
+:root{
+  --bg0:#f7f2e8;
+  --paper:#fffaf0;
+  --paper2:#fffdf7;
+  --ink:#203047;
+  --mut:#6e7687;
+  --line:#e4d8c4;
+  --card:#fffdf7;
+  --accent:#2f75d6;
+  --accent2:#22a6b3;
+  --play:#ffb43b;
+  --play2:#ffcf66;
+  --good:#178b55;
+  --bad:#d94c45;
+  --warn:#b87613;
+  --shadow:0 18px 34px rgba(88,63,32,.14);
+  --shadowSoft:0 10px 20px rgba(88,63,32,.10);
+  --r:20px;
+  --r2:30px;
+  --pad:clamp(10px, 1.8vw, 20px);
+  --hbtn:50px;
+  --hinput:54px;
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(680px 380px at 18% 4%, rgba(255,205,89,.34), transparent 62%),
+    radial-gradient(680px 420px at 92% 8%, rgba(71,190,200,.24), transparent 65%),
+    linear-gradient(180deg, #f8f4ea 0%, #eef6f7 100%);
+  touch-action:manipulation;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(32,48,71,.045) 0 2px, transparent 2px),
+    radial-gradient(circle at 82% 82%, rgba(32,48,71,.035) 0 2px, transparent 2px);
+  background-size:42px 42px, 54px 54px;
+  opacity:.75;
+}
+
+.shell{ gap:8px; padding:8px; }
+.stage{
+  border:2px solid rgba(228,216,196,.85);
+  background:rgba(255,253,247,.84);
+  box-shadow:var(--shadow);
+}
+.top{
+  border:2px solid rgba(228,216,196,.92);
+  background:rgba(255,253,247,.90);
+  box-shadow:var(--shadowSoft);
+  border-radius:28px;
+  padding:8px 10px;
+}
+.dot{
+  background:var(--play);
+  box-shadow:0 0 0 6px rgba(255,180,59,.18);
+}
+.pill,.iconBtn,.seg,.input,.xBtn,.rpToggle,.gcBtn,.calcKey{
+  border-width:2px;
+  border-color:var(--line);
+}
+.pill{ background:rgba(255,250,240,.92); }
+.pill.guestPill{ color:#7c4a08; border-color:rgba(255,180,59,.55); background:rgba(255,224,150,.28); }
+
+.btn,.segBtn,.choice,.key,.deckBtn,.mapDot{
+  -webkit-tap-highlight-color:transparent;
+}
+.btn,.segBtn,.choice,.key,.gcBtn,.deckBtn,.xBtn,.iconBtn,.rpToggle,.calcKey{
+  font-family:"Baloo 2", system-ui, Arial, sans-serif;
+  border-width:2px;
+  transition:transform .08s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn,.segBtn,.choice,.key,.gcBtn,.iconBtn,.deckBtn,.xBtn,.rpToggle{
+  background:linear-gradient(180deg, #fffdf8, #f8efe0);
+  box-shadow:0 4px 0 rgba(98,73,38,.18), 0 8px 14px rgba(84,61,32,.08);
+}
+.btn:active,.segBtn:active,.choice:active,.key:active,.gcBtn:active,.iconBtn:active,.deckBtn:active,.xBtn:active,.rpToggle:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 rgba(98,73,38,.18), 0 5px 10px rgba(84,61,32,.08);
+}
+.btn.primary,.key.ok,.calcKey.eq{
+  color:#3a2600;
+  border-color:rgba(210,129,18,.55);
+  background:linear-gradient(180deg, var(--play2), var(--play));
+  box-shadow:0 5px 0 rgba(169,94,0,.34), 0 12px 18px rgba(169,94,0,.14);
+}
+.btn.ghost{ background:linear-gradient(180deg, #ffffff, #f4f6f8); }
+.btn:disabled{ filter:grayscale(.4); box-shadow:none; }
+.input{
+  background:#fffef9;
+  border-color:var(--line);
+  box-shadow:inset 0 2px 0 rgba(88,63,32,.06);
+  font-size:17px;
+}
+.input:focus{
+  border-color:rgba(47,117,214,.65);
+  box-shadow:0 0 0 4px rgba(47,117,214,.15), inset 0 2px 0 rgba(88,63,32,.06);
+}
+
+/* Start: snel spelen voorop, login blijft bereikbaar */
+#scrStart{ padding:var(--pad); }
+.startCard{
+  max-width:620px;
+  margin:clamp(8px, 4vh, 38px) auto;
+  border:2px solid rgba(228,216,196,.96);
+  background:linear-gradient(180deg, rgba(255,253,247,.98), rgba(255,250,240,.96));
+}
+.startHero{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:14px;
+  align-items:center;
+}
+.questMark{
+  width:68px;
+  height:68px;
+  border-radius:24px;
+  display:grid;
+  place-items:center;
+  font-size:36px;
+  background:linear-gradient(180deg, #d9f7fb, #b8edf2);
+  border:2px solid rgba(34,166,179,.35);
+  box-shadow:0 6px 0 rgba(34,166,179,.15);
+}
+.startSub{ max-width:460px; }
+.bigPlay{
+  width:100%;
+  height:64px;
+  margin-top:16px;
+  border-radius:22px;
+  font-size:22px;
+}
+.guestNote{ text-align:center; margin-top:8px; }
+.loginDivider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:16px 0 2px;
+  color:var(--mut);
+  font-size:13px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.loginDivider::before,.loginDivider::after{
+  content:"";
+  height:2px;
+  flex:1;
+  border-radius:99px;
+  background:var(--line);
+}
+.authTabs{ justify-content:center; }
+.authTabs .segBtn{ flex:1 1 140px; }
+.authPane .row .btn{ flex:1; }
+.startActions{ justify-content:center; }
+.authMsg{ min-height:20px; text-align:center; }
+
+/* Map: swipe-deck met grote SVG-kaarten */
+.map{
+  padding:clamp(8px, 1.7vw, 18px);
+  gap:10px;
+}
+.mapHeader{
+  align-items:center;
+  padding:0 4px;
+}
+.mapTitle{
+  font-size:clamp(22px, 3.4vw, 34px);
+  line-height:1;
+}
+#mapSub{ font-size:clamp(13px, 1.6vw, 15px); }
+.mapDeckBar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  min-height:38px;
+}
+.deckBtn{
+  width:44px;
+  height:38px;
+  border-radius:16px;
+  border:2px solid var(--line);
+  color:var(--ink);
+  font-size:26px;
+  font-weight:900;
+  line-height:1;
+  cursor:pointer;
+}
+.mapDots{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  max-width:min(520px, 60vw);
+  overflow:hidden;
+}
+.mapDot{
+  width:11px;
+  height:11px;
+  padding:0;
+  border-radius:999px;
+  border:0;
+  background:rgba(32,48,71,.20);
+  box-shadow:none;
+  cursor:pointer;
+}
+.mapDot.active{
+  width:28px;
+  background:var(--play);
+}
+.mapGrid{
+  min-height:0;
+  display:flex;
+  gap:clamp(12px, 2vw, 20px);
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scroll-padding-inline:max(14px, calc((100vw - min(560px, 82vw))/2));
+  padding:8px max(16px, calc((100vw - min(560px, 82vw))/2)) 18px;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+}
+.mapGrid::-webkit-scrollbar{ height:10px; }
+.mapGrid::-webkit-scrollbar-thumb{ background:rgba(32,48,71,.18); border-radius:999px; }
+.tile.deckCard{
+  flex:0 0 min(560px, 82vw);
+  scroll-snap-align:center;
+  border:3px solid rgba(228,216,196,.94);
+  border-radius:34px;
+  min-height:min(520px, 66vh);
+  padding:0;
+  display:grid;
+  grid-template-rows:minmax(220px, 1fr) auto;
+  background:
+    radial-gradient(260px 140px at 50% 25%, rgba(255,255,255,.96), transparent 70%),
+    linear-gradient(180deg, #fffdf7 0%, #f8f1e5 100%);
+  box-shadow:0 16px 0 rgba(126,94,43,.08), 0 22px 34px rgba(88,63,32,.12);
+  color:var(--ink);
+  font:inherit;
+  text-align:inherit;
+  outline:none;
+}
+.tile.deckCard.active{
+  border-color:rgba(255,180,59,.85);
+  box-shadow:0 0 0 5px rgba(255,180,59,.16), 0 16px 0 rgba(126,94,43,.08), 0 24px 38px rgba(88,63,32,.16);
+}
+.tile.deckCard:focus-visible{ outline:4px solid rgba(47,117,214,.35); outline-offset:4px; }
+.tile.deckCard .tileTop{
+  padding:clamp(14px, 3vw, 26px) clamp(18px, 4vw, 36px) 4px;
+  display:grid;
+  place-items:center;
+}
+.tile.deckCard .tileTop svg{
+  width:min(100%, 420px);
+  height:auto;
+  max-height:min(330px, 42vh);
+  filter:drop-shadow(0 8px 10px rgba(50,55,70,.10));
+}
+.tileText{
+  padding:14px clamp(16px, 4vw, 28px) clamp(16px, 3vw, 24px);
+  display:grid;
+  gap:10px;
+  text-align:center;
+}
+.tile.deckCard .tileTitle{
+  padding:0;
+  font-size:clamp(28px, 6vw, 44px);
+  line-height:.95;
+  letter-spacing:.1px;
+}
+.topicMeta{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.topicMeta span,.topicTap,.routeChips span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:4px 10px;
+  border-radius:999px;
+  border:2px solid rgba(228,216,196,.85);
+  background:rgba(255,255,255,.66);
+  color:var(--mut);
+  font-weight:900;
+  font-size:14px;
+}
+.topicTap{
+  justify-self:center;
+  color:#5c3905;
+  border-color:rgba(255,180,59,.60);
+  background:rgba(255,216,128,.34);
+}
+.cornerMedal{
+  width:44px;
+  height:44px;
+  top:14px;
+  right:14px;
+  border-width:2px;
+  font-size:24px;
+}
+
+/* Modal: minder tekst, duidelijk kiezen */
+.modalBack{ backdrop-filter:blur(3px); }
+.modal{
+  border:3px solid rgba(228,216,196,.95);
+  background:var(--paper2);
+}
+.modalHead{ background:linear-gradient(180deg,#fffdf7,#fbf2e4); }
+.modeGrid{ gap:12px; }
+.modeCard{
+  border:2px solid var(--line);
+  border-radius:24px;
+  background:linear-gradient(180deg, #fffdf8, #f8efe0);
+  box-shadow:0 5px 0 rgba(98,73,38,.12);
+}
+.modeCard h3{ font-size:20px; line-height:1; }
+.modeCard p{ font-size:13px; margin:0; }
+.modeCard .btn{ width:100%; }
+.routeChips{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* Game: focus op vraag + antwoord, geen dashboardgevoel */
+.game{
+  padding:clamp(7px, 1.3vw, 14px);
+  gap:clamp(8px, 1.4vw, 14px);
+  grid-template-columns:minmax(0, 1fr) minmax(285px, 330px);
+}
+.panel,.rightPanel{
+  border:3px solid rgba(228,216,196,.92);
+  border-radius:28px;
+  background:rgba(255,253,247,.96);
+  box-shadow:var(--shadowSoft);
+}
+.panel{ grid-template-rows:minmax(0, 1fr) auto auto; }
+.panelBodyInner{
+  padding:clamp(10px, 1.4vw, 16px);
+  gap:clamp(8px, 1.2vw, 12px);
+}
+.promptBig{
+  font-size:clamp(20px, 3vw, 30px);
+  line-height:1.08;
+  max-width:980px;
+  margin:0 auto;
+}
+.promptSub{ font-size:clamp(14px, 1.6vw, 17px); }
+.visualWrap{
+  border:2px solid rgba(228,216,196,.88);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%, rgba(255,255,255,.92), transparent 72%),
+    #fbf7ee;
+  padding:clamp(8px, 1.4vw, 14px);
+}
+.answer{
+  padding:clamp(9px, 1.4vw, 14px);
+  background:linear-gradient(180deg, rgba(255,250,240,.94), rgba(255,253,247,.98));
+  border-top:2px solid var(--line);
+}
+.choices{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  gap:10px;
+}
+.choice{
+  min-height:54px;
+  height:auto;
+  padding:8px 12px;
+  border-radius:18px;
+  font-size:clamp(16px, 1.8vw, 20px);
+  color:var(--ink);
+}
+.choice.sel{
+  border-color:rgba(47,117,214,.7);
+  background:linear-gradient(180deg, #e8f2ff, #d7e9ff);
+  box-shadow:0 0 0 5px rgba(47,117,214,.16), 0 4px 0 rgba(47,117,214,.16);
+}
+.aRow{ gap:9px; }
+#mainInput{
+  max-width:min(100%, 360px)!important;
+  text-align:center;
+  font-size:22px;
+}
+.okInline,#btnOkMc{
+  min-width:120px;
+  font-size:18px;
+}
+.status{
+  min-height:28px;
+  font-size:clamp(16px, 1.8vw, 20px);
+  line-height:1.15;
+}
+.rpHead{
+  background:linear-gradient(180deg,#fffdf7,#fbf2e4);
+  border-bottom:2px solid var(--line);
+  padding:10px 12px;
+}
+.keypad{
+  gap:9px;
+  padding:12px;
+}
+.key{
+  min-height:52px;
+  height:auto;
+  border-radius:18px;
+  font-size:20px;
+  color:var(--ink);
+}
+.gcSlot{
+  border-top:2px solid var(--line);
+  background:rgba(255,253,247,.96);
+  padding:9px 12px;
+}
+.gcBtn{ width:56px; height:44px; }
+.lvlTop{ border-width:2px; background:rgba(255,253,247,.92); }
+
+/* Help/calculator overlays */
+.helpCard{
+  border:3px solid rgba(228,216,196,.96);
+  border-radius:28px;
+  background:var(--paper2);
+}
+.calcLCD{ border-width:2px; background:#fffaf0; }
+
+/* Low-resolution and phones */
+@media (max-width:980px){
+  .game{
+    grid-template-columns:1fr;
+    grid-template-rows:minmax(0, 1fr) auto;
+    height:100%;
+    overflow:auto;
+  }
+  .rightPanel{
+    position:relative;
+    overflow:visible;
+  }
+  .rightPanel.noKeypad{ min-height:0; }
+  .rightPanel.noKeypad .gcSlot{ border-top:0; }
+}
+
+@media (max-width:700px){
+  .shell{ padding:6px; gap:6px; }
+  .top{
+    grid-template-columns:1fr auto;
+    border-radius:22px;
+    padding:6px 7px;
+  }
+  .topCenter{ display:none; }
+  .brand{ gap:7px; }
+  .brandTitle{ max-width:34vw; }
+  #pillUser{ display:none; }
+  .pill{ height:32px; padding:0 9px; font-size:13px; }
+  .iconBtn{ height:34px; width:38px; }
+  .stage{ border-radius:22px; }
+
+  #scrStart{ padding:8px; }
+  .startCard{ margin:0 auto; padding:14px; border-radius:24px; }
+  .questMark{ width:56px; height:56px; border-radius:20px; font-size:30px; }
+  .bigPlay{ height:60px; font-size:20px; }
+  .authPane .stack{ gap:5px; }
+
+  .map{ padding:8px 0 0; grid-template-rows:auto auto 1fr; }
+  .mapHeader{ padding:0 10px; }
+  .mapHeaderBtns .btn{ height:40px; padding:0 10px; font-size:14px; }
+  #mapSub{ max-width:260px; }
+  .mapDeckBar{ min-height:32px; }
+  .deckBtn{ width:40px; height:34px; }
+  .mapGrid{
+    padding-inline:max(10px, calc((100vw - min(360px, 84vw))/2));
+    scroll-padding-inline:max(10px, calc((100vw - min(360px, 84vw))/2));
+    gap:12px;
+  }
+  .tile.deckCard{
+    flex-basis:min(360px, 84vw);
+    min-height:min(440px, 65vh);
+    border-radius:28px;
+    grid-template-rows:minmax(190px, 1fr) auto;
+  }
+  .tile.deckCard .tileTop svg{ max-height:min(250px, 36vh); }
+  .tile.deckCard .tileTitle{ font-size:clamp(27px, 9vw, 38px); }
+  .topicMeta span,.topicTap{ font-size:13px; min-height:28px; }
+
+  .modalBack{ padding:8px; align-items:end; }
+  .modal{ border-radius:28px 28px 18px 18px; max-height:94dvh; overflow:auto; }
+  .modalHead{ padding:12px; }
+  .modalBody{ padding:12px; gap:10px; }
+  .modeGrid{ grid-template-columns:1fr; }
+  .modeCard{ grid-template-columns:1fr auto; align-items:center; padding:12px; }
+  .modeCard .btn{ width:auto; min-width:96px; }
+  .modeCard p{ display:none; }
+
+  .game{ padding:6px; gap:7px; }
+  .panel,.rightPanel{ border-radius:22px; border-width:2px; }
+  .panelBodyInner{ padding:9px; }
+  .promptBig{ font-size:clamp(19px, 5.7vw, 25px); }
+  .promptSub{ font-size:14px; }
+  .visualWrap{
+    border-radius:18px;
+    padding:7px;
+    max-height:42dvh;
+  }
+  .visualWrap svg{ max-height:40dvh; }
+  .visualWrap svg.geoScene{ max-height:46dvh; }
+  .answer{ padding:8px; gap:8px; }
+  .choices{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
+  .choice{ min-width:0; min-height:52px; border-radius:16px; font-size:17px; padding:7px 8px; }
+  .choice:only-child{ grid-column:1 / -1; }
+  .aRow{ flex-wrap:nowrap; }
+  #mainInput{ min-width:0; flex:1 1 auto; height:52px; font-size:20px; }
+  .unitChip{ height:52px; min-width:54px; padding:0 9px; }
+  .okInline{ height:52px; min-width:74px; padding:0 12px; }
+  #btnOkMc{ width:100%; }
+  .rightPanel{ box-shadow:none; }
+  .rpHead{ padding:8px 10px; }
+  .keypad{ gap:7px; padding:8px; }
+  .key{ min-height:46px; border-radius:15px; font-size:18px; }
+  .gcSlot{ padding:7px; }
+  .gcBtn{ width:52px; height:40px; border-radius:15px; }
+
+  .fraction-wrap{ gap:12px; padding:10px; }
+  .fraction{ width:118px; grid-template-rows:40px 5px 40px; }
+  .fraction .num,.fraction .den,.fraction input{ height:40px; font-size:19px; }
+  .shop-discount{ gap:12px; padding:8px; flex-wrap:wrap; }
+  .shop-item img{ width:64px; }
+  .digitalTime{ font-size:26px; }
+}
+
+@media (max-width:420px){
+  .brandTitle{ max-width:28vw; }
+  .top .row{ gap:5px!important; }
+  #pillMode,#pillHud{ max-width:34vw; overflow:hidden; text-overflow:ellipsis; }
+  .choices{ grid-template-columns:1fr; }
+  .tile.deckCard{ min-height:min(400px, 63vh); }
+  .tile.deckCard .tileTop svg{ max-height:min(220px, 34vh); }
+  .tileText{ padding:10px 12px 14px; gap:8px; }
+  .topicMeta span:nth-child(1){ display:none; }
+}
+
+@media (max-height:720px){
+  :root{ --hbtn:44px; --hinput:48px; }
+  .shell{ padding:5px; }
+  .top{ padding:5px 7px; }
+  .mapHeader{ padding-top:0; }
+  .mapDeckBar{ min-height:30px; }
+  .tile.deckCard{ min-height:min(390px, 62vh); }
+  .tile.deckCard .tileTop svg{ max-height:min(220px, 34vh); }
+  .tile.deckCard .tileTitle{ font-size:clamp(25px, 7vw, 34px); }
+  .promptBig{ font-size:clamp(18px, 4.8vw, 24px); }
+  .status{ min-height:22px; font-size:16px; }
+  .visualWrap{ max-height:38dvh; }
+  .visualWrap svg{ max-height:36dvh; }
+  .key{ min-height:42px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ scroll-behavior:auto!important; transition:none!important; }
+}
+.fraction-cell.on{ background:var(--accent); }

@@ -1,0 +1,229 @@
+
+/* Geodriehoek workspace redesign
+   Doel: meetopgaven veel groter en rustiger maken, zonder de geodriehoek te vervangen. */
+
+#gameGrid.geoMeasureMode{
+  width:100%;
+  max-width:none;
+}
+#gameGrid.geoMeasureMode .panel{
+  overflow:hidden;
+}
+#gameGrid.geoMeasureMode .panelBody{
+  min-height:0;
+}
+#gameGrid.geoMeasureMode .panelBodyInner{
+  height:100%;
+  min-height:0;
+  display:grid;
+  grid-template-rows:auto minmax(420px, 1fr) auto;
+  align-content:stretch;
+  gap:8px;
+  padding:8px 10px;
+}
+#gameGrid.geoMeasureMode #qPrompt{
+  max-width:980px;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPrompt,
+#gameGrid.geoMeasureMode #qPrompt .mqPrompt{
+  gap:4px;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPromptKicker,
+#gameGrid.geoMeasureMode #qPrompt .mqPromptKicker{
+  display:none;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPromptLine.main,
+#gameGrid.geoMeasureMode #qPrompt .mqPromptMain{
+  font-size:clamp(22px, 2.2vw, 34px);
+  line-height:1.12;
+}
+#gameGrid.geoMeasureMode #qPrompt .wqPromptLine.sub,
+#gameGrid.geoMeasureMode #qPrompt .mqPromptSubline{
+  font-size:clamp(17px, 1.5vw, 22px);
+}
+#gameGrid.geoMeasureMode #qSub{
+  display:none!important;
+}
+#gameGrid.geoMeasureMode #status{
+  min-height:22px;
+  font-size:clamp(14px, 1.4vw, 18px);
+}
+#gameGrid.geoMeasureMode .visualWrap{
+  height:100%;
+  min-height:420px;
+  max-height:none!important;
+  overflow:hidden;
+  padding:8px;
+  border-radius:26px;
+  background:
+    radial-gradient(520px 230px at 50% 0%, rgba(255,255,255,.96), transparent 72%),
+    linear-gradient(180deg,#fffdf8,#f4f8ff);
+}
+#gameGrid.geoMeasureMode .visualWrap > *,
+#gameGrid.geoMeasureMode .visualWrap .vizCard{
+  width:100%;
+  height:100%;
+  max-width:none!important;
+  min-height:0;
+}
+#gameGrid.geoMeasureMode .visualWrap .vizCard{
+  display:grid;
+  grid-template-rows:minmax(0, 1fr) auto;
+  padding:8px;
+}
+#gameGrid.geoMeasureMode .visualWrap svg.geoScene{
+  width:100%;
+  height:100%;
+  max-width:none!important;
+  max-height:none!important;
+  min-height:0;
+  object-fit:contain;
+  touch-action:none;
+}
+#gameGrid.geoMeasureMode .visualWrap .vizCaption{
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.15;
+}
+#gameGrid.geoMeasureMode .answer{
+  padding:8px 10px;
+  gap:6px;
+}
+#gameGrid.geoMeasureMode .aRow{
+  gap:8px;
+}
+#gameGrid.geoMeasureMode #mainInput{
+  height:48px;
+  font-size:22px;
+}
+#gameGrid.geoMeasureMode .unitChip,
+#gameGrid.geoMeasureMode .okInline{
+  height:48px;
+}
+#gameGrid.geoMeasureMode .keypad{
+  gap:7px;
+  padding:8px;
+}
+#gameGrid.geoMeasureMode .key{
+  min-height:46px;
+  border-radius:15px;
+}
+
+@media (min-width:1100px){
+  #scrGame.active{
+    overflow:hidden;
+  }
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:minmax(720px, 1fr) minmax(280px, 330px);
+    gap:10px;
+    padding:8px 10px;
+  }
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    grid-template-rows:auto minmax(500px, 1fr) auto;
+  }
+  #gameGrid.geoMeasureMode .visualWrap{
+    min-height:500px;
+  }
+}
+
+@media (min-width:1400px){
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:minmax(920px, 1fr) 340px;
+  }
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    grid-template-rows:auto minmax(580px, 1fr) auto;
+  }
+  #gameGrid.geoMeasureMode .visualWrap{
+    min-height:580px;
+  }
+}
+
+@media (max-width:980px){
+  #gameGrid.geoMeasureMode{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto;
+    height:auto;
+    min-height:100%;
+    overflow:visible;
+  }
+  #gameGrid.geoMeasureMode .panel{
+    min-height:auto;
+  }
+  #gameGrid.geoMeasureMode .panelBodyInner{
+    grid-template-rows:auto minmax(0, 1fr) auto;
+    padding:6px;
+    gap:6px;
+  }
+  #gameGrid.geoMeasureMode .visualWrap{
+    height:52dvh;
+    min-height:340px;
+    padding:5px;
+  }
+  #gameGrid.geoMeasureMode #qPrompt .wqPromptLine.main,
+  #gameGrid.geoMeasureMode #qPrompt .mqPromptMain{
+    font-size:clamp(19px, 5.1vw, 27px);
+  }
+  #gameGrid.geoMeasureMode #qPrompt .wqPromptLine.sub,
+  #gameGrid.geoMeasureMode #qPrompt .mqPromptSubline{
+    font-size:clamp(15px, 4vw, 19px);
+  }
+  #gameGrid.geoMeasureMode .answer{
+    padding:6px 8px;
+  }
+  #gameGrid.geoMeasureMode #mainInput{
+    height:44px;
+    font-size:20px;
+  }
+  #gameGrid.geoMeasureMode .unitChip,
+  #gameGrid.geoMeasureMode .okInline{
+    height:44px;
+    min-width:58px;
+  }
+  #gameGrid.geoMeasureMode .rightPanel{
+    border-radius:18px;
+  }
+  #gameGrid.geoMeasureMode .rpHead{
+    padding:6px 10px;
+  }
+  #gameGrid.geoMeasureMode .keypad{
+    gap:5px;
+    padding:6px;
+  }
+  #gameGrid.geoMeasureMode .key{
+    min-height:38px;
+    font-size:17px;
+    border-radius:13px;
+  }
+  #gameGrid.geoMeasureMode .gcSlot{
+    padding:5px;
+  }
+  #gameGrid.geoMeasureMode .gcBtn{
+    height:36px;
+  }
+}
+
+@media (max-width:430px){
+  #gameGrid.geoMeasureMode .visualWrap{
+    height:49dvh;
+    min-height:310px;
+  }
+  #gameGrid.geoMeasureMode .visualWrap .vizCaption{
+    display:none;
+  }
+  #gameGrid.geoMeasureMode .key{
+    min-height:36px;
+    font-size:16px;
+  }
+}
+
+@media (max-height:740px){
+  #gameGrid.geoMeasureMode .visualWrap{
+    min-height:300px;
+  }
+  #gameGrid.geoMeasureMode .key{
+    min-height:36px;
+  }
+  #gameGrid.geoMeasureMode .keypad{
+    gap:5px;
+  }
+}
